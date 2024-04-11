@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 
 import { Button } from '@/src/common/components/button';
+// import Test from './Test';
 
 export const Header = () => {
     const pathname = usePathname();
@@ -21,6 +22,7 @@ export const Header = () => {
             </Button>
             <p className="text-[20px]">Month</p>
             <Button>Archive</Button>
+            {/* <Test/> */}
         </div>
     );
 };

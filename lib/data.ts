@@ -1,5 +1,7 @@
+'use server'
 import { sql } from '@vercel/postgres';
 import moment from 'moment';
+import { DateRange } from 'react-day-picker';
 
 import { formatCurrency, formatDateToLocal } from './utils';
 import { User, Invoice, InvoicesTable, InvoiceForm, CategoriesField } from './definitions';
@@ -23,37 +25,79 @@ export async function fetchLatestInvoices() {
         throw new Error('Failed to fetch the latest invoices.');
     }
 }
+// test
+export const fetchFilteredDate = async (currentPage: number) => {
+    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+    try {
+        const test = await sql<InvoicesTable>`
+        SELECT
+          invoices.id,
+          invoices.amount,
+          invoices.date,
+          invoices.status,
+          invoices.method,
+          users.name
+        FROM invoices
+        JOIN users ON invoices.customer_id = users.id
+        ORDER BY invoices.date DESC
+        LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+      `;
+
+        const dataT = test.rows.map((invoice) => ({
+            ...invoice,
+            // date: formatDateToLocal(invoice.date),
+            amount: formatCurrency(invoice.amount)
+        }));
+
+        return dataT;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch date_invoices.');
+    }
+};
 
 //викорситовую
 const ITEMS_PER_PAGE = 6;
-export async function fetchFilteredInvoices(query: string, currentPage: number) {
+export async function fetchFilteredInvoices(query: string, currentPage: number, startDate?: any, endDate?: any) {
     const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
     try {
         const invoices = await sql<InvoicesTable>`
-      SELECT
+    SELECT
         invoices.id,
         invoices.amount,
         invoices.date,
         invoices.status,
         invoices.method,
         users.name
-      FROM invoices
-      JOIN users ON invoices.customer_id = users.id
-      WHERE
-      users.name ILIKE ${`%${query}%`} OR
-        invoices.amount::text ILIKE ${`%${query}%`} OR
-        invoices.date::text ILIKE ${`%${query}%`} OR
-        invoices.status ILIKE ${`%${query}%`} OR
-        invoices.method ILIKE ${`%${query}%`}
-      ORDER BY invoices.date DESC
-      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-    `;
-    const data = invoices.rows.map((invoice) => ({
-        ...invoice,
-        date: formatDateToLocal(invoice.date),
-        amount: formatCurrency(invoice.amount)
-    }))
+    FROM invoices
+    JOIN users ON invoices.customer_id = users.id
+    WHERE
+        (
+            users.name ILIKE ${`%${query}%`} OR
+            invoices.amount::text ILIKE ${`%${query}%`} OR
+            invoices.status ILIKE ${`%${query}%`} OR
+            invoices.method ILIKE ${`%${query}%`}
+        ) AND
+        (
+            invoices.date >= ${startDate} AND invoices.date <= ${endDate}
+
+        )
+    ORDER BY invoices.date DESC
+    LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+`;
+
+
+
+        const data = invoices.rows.map((invoice) => ({
+            ...invoice,
+            // date: formatDateToLocal(invoice.date),
+            amount: formatCurrency(invoice.amount)
+        }));
+        console.log(data[0].date);
+        console.log(`start ${startDate}`);
+
         return data;
     } catch (error) {
         console.error('Database Error:', error);
@@ -100,7 +144,7 @@ export async function fetchCustomers() {
     }
 }
 //використовую
-export async function fetchCardData() { 
+export async function fetchCardData() {
     try {
         const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
         const invoiceStatusPromise = sql`SELECT
@@ -125,7 +169,7 @@ export async function fetchCardData() {
     }
 }
 
-export async function fetchCardDataTest() { 
+export async function fetchCardDataTest() {
     try {
         const cardDataPromise = sql`
             SELECT 
@@ -142,8 +186,8 @@ export async function fetchCardDataTest() {
         const numberOfKInvoices = data.rows[0].numberOfKInvoices ?? 0;
         const numberOfYInvoices = data.rows[0].numberOfYInvoices ?? 0;
 
-        const debtKhrystyna = Math.max(0, (numberOfYInvoices - numberOfKInvoices)/2);
-        const debtYevhenii = Math.max(0, (numberOfKInvoices - numberOfYInvoices)/2);
+        const debtKhrystyna = Math.max(0, (numberOfYInvoices - numberOfKInvoices) / 2);
+        const debtYevhenii = Math.max(0, (numberOfKInvoices - numberOfYInvoices) / 2);
 
         const formattedData = {
             numberOfKInvoices: formatCurrency(data.rows[0].numberOfKInvoices ?? '0'),
@@ -160,7 +204,6 @@ export async function fetchCardDataTest() {
         throw new Error('Failed to fetch card data.');
     }
 }
-
 
 export const getUser = async (email: string) => {
     try {
@@ -200,7 +243,7 @@ export const fetchCategories = async () => {
     try {
         const categoriesAmount = await sql<CategoriesField>`
         SELECT 
-        categories.categ_name, 
+        categories.categ_name,  
         categories.categ_img, 
         categories.categ_amount
         FROM categories

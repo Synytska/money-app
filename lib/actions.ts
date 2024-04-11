@@ -8,7 +8,7 @@ const FormSchema = z.object({
     id: z.string(),
     customerId: z.string(),
     amount: z.coerce.number(),
-    status: z.enum(['pending', 'paid']),
+    status: z.enum(['unpaid', 'paid']),
     date: z.string(),
     method: z.string(),
     categ_name: z.string()

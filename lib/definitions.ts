@@ -24,6 +24,7 @@ export type InvoicesTable = {
     method: string;
 };
 
+
 export type Categories = {
     categ_name: string;
     categ_img: string;

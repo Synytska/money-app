@@ -14,7 +14,7 @@ const Page = async ({
     const currentPage = Number(searchParams?.page) || 1;
     const totalPages = await fetchInvoicesPages(query);
 
-    return <BalancePage query={query} page={searchParams.page} currentPage={currentPage} totalPages={totalPages} />;
+    return <BalancePage query={query} currentPage={currentPage} totalPages={totalPages} />;
 };
 
 export default Page;
