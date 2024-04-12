@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { Button } from '@/src/common/components/button';
+import { Button } from '@/components/ui/button';
 import { Categories } from './Categories/Categories';
 import { LatestInvoices } from './LatestInvoice/LatestInvoices';
 import BalanceCards from './BalanceCards/BalanceCards';
@@ -13,7 +13,7 @@ import {
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger
-} from '@/src/common/components/drawer';
+} from '@/components/ui/drawer';
 
 export const MainComponent = () => {
     return (

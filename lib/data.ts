@@ -1,4 +1,4 @@
-'use server'
+'use server';
 import { sql } from '@vercel/postgres';
 import moment from 'moment';
 import { DateRange } from 'react-day-picker';
@@ -63,6 +63,15 @@ export async function fetchFilteredInvoices(query: string, currentPage: number, 
     const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
     try {
+        const invoicesbydate = await sql<InvoicesTable>`
+    SELECT * FROM invoices
+    JOIN users ON invoices.customer_id = users.id
+    WHERE
+        invoices.date >= ${startDate} AND invoices.date <= ${endDate}
+    ORDER BY invoices.date DESC
+    LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    `;
+
         const invoices = await sql<InvoicesTable>`
     SELECT
         invoices.id,
@@ -74,31 +83,24 @@ export async function fetchFilteredInvoices(query: string, currentPage: number, 
     FROM invoices
     JOIN users ON invoices.customer_id = users.id
     WHERE
-        (
             users.name ILIKE ${`%${query}%`} OR
             invoices.amount::text ILIKE ${`%${query}%`} OR
             invoices.status ILIKE ${`%${query}%`} OR
             invoices.method ILIKE ${`%${query}%`}
-        ) AND
-        (
-            invoices.date >= ${startDate} AND invoices.date <= ${endDate}
-
-        )
     ORDER BY invoices.date DESC
     LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
 `;
+        const data = await Promise.all([invoices, invoicesbydate]);
+        const invoiceByQuery = data[0].rows;
+        const invoiceByDate = data[1].rows;
 
+        // const data = invoices.rows.map((invoice) => ({
+        //     ...invoice,
+        //     // date: formatDateToLocal(invoice.date),
+        //     amount: formatCurrency(invoice.amount)
+        // }));
 
-
-        const data = invoices.rows.map((invoice) => ({
-            ...invoice,
-            // date: formatDateToLocal(invoice.date),
-            amount: formatCurrency(invoice.amount)
-        }));
-        console.log(data[0].date);
-        console.log(`start ${startDate}`);
-
-        return data;
+        return { invoiceByQuery, invoiceByDate };
     } catch (error) {
         console.error('Database Error:', error);
         throw new Error('Failed to fetch invoices.');

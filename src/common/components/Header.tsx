@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 
-import { Button } from '@/src/common/components/button';
+import { Button } from '@/components/ui/button';
 // import Test from './Test';
 
 export const Header = () => {

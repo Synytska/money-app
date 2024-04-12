@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/common/components/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 import { formatDateToLocal } from '@/lib/utils';
 import { fetchLatestInvoices } from '@/lib/data';
