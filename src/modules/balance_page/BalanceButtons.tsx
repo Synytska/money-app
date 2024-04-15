@@ -2,6 +2,8 @@
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { useRouter } from 'next/router';
+import { Button } from '@/components/ui/button';
+import { payInvoice } from '@/lib/actions';
 
 export function CreateInvoice() {
     return (
@@ -14,28 +16,26 @@ export function CreateInvoice() {
     );
 }
 
+export const CreateInvoiceTest = ({ name, children }: { name: string; children: ReactNode }) => {
+    return (
+        <Link
+            href={`${name}/create`}
+            className="flex h-10 items-center rounded-lg px-4 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+        >
+            {children}
+        </Link>
+    );
+};
 
-
-export function CreateInvoiceTest({name, children}: {name: string, children:ReactNode}) {
-  return (
-    <Link
-      href={`${name}/create`}
-      className="flex h-10 items-center rounded-lg px-4 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-    >
-      {children}
-    </Link>
-  );
-}
-
-export function UpdateInvoice({ id }: { id: string }) {
+export const UpdateInvoice = ({ id }: { id: string }) => {
     return (
         <Link href={`/balance/${id}/edit`} className="rounded-md border p-2 hover:bg-gray-100">
             Edit
         </Link>
     );
-}
+};
 
-export function DeleteInvoice({ id }: { id: string }) {
+export const DeleteInvoice = ({ id }: { id: string }) => {
     return (
         <>
             <button className="rounded-md border p-2 hover:bg-gray-100">
@@ -43,4 +43,15 @@ export function DeleteInvoice({ id }: { id: string }) {
             </button>
         </>
     );
-}
+};
+
+export const PayInvoice = ({ id }: { id: string }) => {
+    const payInvoiceWithId = payInvoice.bind(null, id);
+   
+    return (
+      <form action={payInvoiceWithId}>
+        <Button>Pay</Button>
+      </form>
+    );
+  }
+

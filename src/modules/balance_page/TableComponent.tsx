@@ -1,7 +1,23 @@
+'use client';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { UpdateInvoice, DeleteInvoice } from './BalanceButtons';
+import { UpdateInvoice, DeleteInvoice, PayInvoice } from './BalanceButtons';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 export const TableComponent = ({ invoices }: { invoices: any[] }) => {
+    // const [ids, setIds] = useState<string[]>([]);
+    const [ids, setIds] = useState<string>('');
+
+
+    // const handleOnClick = (id: string) => {
+    //     setIds((prevIds: string[]) => [...prevIds, id]);
+    // };
+
+    const handleOnClick = (id: string) => {
+        setIds(id);
+    };
+    console.log(ids);
+
     return (
         <div className="mt-6 flow-root min-w-full align-middle rounded-lg bg-gray-50 p-2 md:pt-0">
             <Table className="md:hidden">
@@ -39,7 +55,7 @@ export const TableComponent = ({ invoices }: { invoices: any[] }) => {
                         return (
                             <TableRow key={invoice.id} className="pointer mb-2 w-full rounded-md bg-white p-4">
                                 <TableCell>
-                                    <input type="checkbox" />
+                                    <input type="checkbox" id={invoice.id} onClick={() => handleOnClick(invoice.id)}/>
                                 </TableCell>
                                 <TableCell className="font-medium">{invoice.name}</TableCell>
                                 <TableCell>{invoice.amount}</TableCell>
@@ -55,6 +71,8 @@ export const TableComponent = ({ invoices }: { invoices: any[] }) => {
                     })}
                 </TableBody>
             </Table>
+            <PayInvoice id = {ids}/>
         </div>
     );
 };
+

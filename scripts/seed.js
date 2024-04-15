@@ -1,6 +1,6 @@
 const { db } = require('@vercel/postgres');
 
-const { users, invoices, categories } = require('../lib/placeholder-data.js');
+const { users, invoices, categories, archives } = require('../lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
 
 const seedUsers = async (client) => {
@@ -75,6 +75,42 @@ const seedCategories = async (client) => {
     }
 };
 
+const seedArchive = async (client) => {
+    try {
+        await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+        const createArchives = await client.sql`
+        CREATE TABLE IF NOT EXISTS archives (
+            id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+            customer_id UUID NOT NULL,
+            amount INT NOT NULL,
+            status VARCHAR(255) NOT NULL,
+            date DATE NOT NULL,
+            method VARCHAR(255) NOT NULL
+        );
+        `;
+        console.log(`Created "archives" table`);
+
+        const insertedArchives = await Promise.all(
+            archives.map(
+                (invoice) => client.sql`
+                INSERT INTO archives (customer_id, amount, status, date, method)
+                VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${invoice.date}, ${invoice.method})
+                 ON CONFLICT (id) DO NOTHING;
+          `
+            )
+        );
+
+        console.log(`Seeded ${insertedArchives.length} archivinvoices`);
+        return {
+            createArchives,
+            archives: insertedArchives
+        };
+    } catch (error) {
+        console.error('Error seeding archives:', error);
+        throw error;
+    }
+};
+
 const seedInvoices = async (client) => {
     try {
         await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -119,6 +155,7 @@ async function main() {
     await seedUsers(client);
     await seedInvoices(client);
     await seedCategories(client);
+    await seedArchive(client);
 
     await client.end();
 }

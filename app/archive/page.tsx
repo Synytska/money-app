@@ -1,3 +1,4 @@
+import { ArchiveComponent } from "@/src/modules/archive/ArchiveComponent";
 export default function Page() {
-    return <p>Archive Page</p>;
+    return <div><ArchiveComponent/></div>;
   }

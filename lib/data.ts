@@ -25,6 +25,26 @@ export async function fetchLatestInvoices() {
         throw new Error('Failed to fetch the latest invoices.');
     }
 }
+
+export const fetchArchives = async() => {
+    try{
+        const data = await sql`
+        SELECT archives.amount, users.name, archives.id, archives.method, archives.date, archives.status
+        FROM archives
+        JOIN users ON archives.customer_id = users.id
+        ORDER BY archives.date DESC
+        `;
+        const archiveInvoices = data.rows.map((invoice) => ({
+            ...invoice,
+            date: formatDateToLocal(invoice.date),
+            amount: formatCurrency(invoice.amount)
+        }));
+        return archiveInvoices;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch archive_invoices.');
+    }
+}
 // test
 export const fetchFilteredDate = async (currentPage: number) => {
     const offset = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -91,14 +111,17 @@ export async function fetchFilteredInvoices(query: string, currentPage: number, 
     LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
 `;
         const data = await Promise.all([invoices, invoicesbydate]);
-        const invoiceByQuery = data[0].rows;
-        const invoiceByDate = data[1].rows;
 
-        // const data = invoices.rows.map((invoice) => ({
-        //     ...invoice,
-        //     // date: formatDateToLocal(invoice.date),
-        //     amount: formatCurrency(invoice.amount)
-        // }));
+        const invoiceByQuery = data[0].rows.map((invoice) => ({
+            ...invoice,
+            date: formatDateToLocal(invoice.date),
+            amount: formatCurrency(invoice.amount)
+        }));
+        const invoiceByDate = data[1].rows.map((invoice) => ({
+            ...invoice,
+            date: formatDateToLocal(invoice.date),
+            amount: formatCurrency(invoice.amount)
+        }));
 
         return { invoiceByQuery, invoiceByDate };
     } catch (error) {
@@ -171,19 +194,26 @@ export async function fetchCardData() {
     }
 }
 
-export async function fetchCardDataTest() {
+export async function fetchCardDataTest() { 
     try {
         const cardDataPromise = sql`
             SELECT 
                 SUM(CASE WHEN users.name = 'Khrystyna' THEN invoices.amount ELSE 0 END) AS "numberOfKInvoices",
                 SUM(CASE WHEN users.name = 'Yevhenii' THEN invoices.amount ELSE 0 END) AS "numberOfYInvoices",
-                SUM(CASE WHEN invoices.status = 'paid' THEN invoices.amount ELSE 0 END) AS "totalPaidInvoices",
-                SUM(CASE WHEN invoices.status = 'pending' THEN invoices.amount ELSE 0 END) AS "totalPendingInvoices"
+                SUM(CASE WHEN invoices.status = 'unpaid' THEN invoices.amount ELSE 0 END) AS "totalPendingInvoices"
             FROM invoices
             JOIN users ON invoices.customer_id = users.id
         `;
 
+        const paidInvoicesPromise = sql`
+            SELECT 
+                SUM(CASE WHEN archives.status = 'paid' THEN archives.amount ELSE 0 END) AS "totalPaidInvoices"
+            FROM archives
+            JOIN users ON archives.customer_id = users.id
+        `;
+
         const data = await cardDataPromise;
+        const payedData = await paidInvoicesPromise;
 
         const numberOfKInvoices = data.rows[0].numberOfKInvoices ?? 0;
         const numberOfYInvoices = data.rows[0].numberOfYInvoices ?? 0;
@@ -194,7 +224,7 @@ export async function fetchCardDataTest() {
         const formattedData = {
             numberOfKInvoices: formatCurrency(data.rows[0].numberOfKInvoices ?? '0'),
             numberOfYInvoices: formatCurrency(data.rows[0].numberOfYInvoices ?? '0'),
-            totalPaidInvoices: formatCurrency(data.rows[0].totalPaidInvoices ?? '0'),
+            totalPaidInvoices: formatCurrency(payedData.rows[0].totalPaidInvoices ?? '0'),
             totalPendingInvoices: formatCurrency(data.rows[0].totalPendingInvoices ?? '0'),
             debtKhrystyna: formatCurrency(debtKhrystyna),
             debtYevhenii: formatCurrency(debtYevhenii)

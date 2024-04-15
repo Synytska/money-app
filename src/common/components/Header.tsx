@@ -10,18 +10,39 @@ export const Header = () => {
     const pathname = usePathname();
     return (
         <div className="flex flex-row justify-between w-full items-center pb-16">
+            <div className="flex">
+                <Button asChild>
+                    <Link
+                        href="/login"
+                        className={clsx('flex', {
+                            'bg-sky-100 text-blue-600': pathname === '/login'
+                        })}
+                    >
+                        Login
+                    </Link>
+                </Button>
+                <Button asChild>
+                    <Link
+                        href="/"
+                        className={clsx('flex', {
+                            'bg-sky-100 text-blue-600': pathname === '/login'
+                        })}
+                    >
+                        Home
+                    </Link>
+                </Button>
+            </div>
+            <p className="text-[20px]">Month</p>
             <Button asChild>
                 <Link
-                    href="/login"
+                    href="/archive"
                     className={clsx('flex', {
                         'bg-sky-100 text-blue-600': pathname === '/login'
                     })}
                 >
-                    Login
+                    Archive
                 </Link>
             </Button>
-            <p className="text-[20px]">Month</p>
-            <Button>Archive</Button>
             {/* <Test/> */}
         </div>
     );

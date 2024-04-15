@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 const FormSchema = z.object({
     id: z.string(),
@@ -39,10 +40,32 @@ export async function createInvoice(formData: FormData) {
         WHERE categ_name = ${categ_name}
 `
     ]);
-    console.log(categ_name);
+    // console.log(categ_name);
 
     revalidatePath('/balance');
     revalidatePath('/');
-    redirect('/');
+    redirect('/balance');
 }
+
+export const payInvoice = async (id: string) => {
+    await Promise.all([
+        sql`
+        INSERT INTO archives (customer_id, amount, status, date, method)
+        SELECT customer_id, amount, status, date, method FROM invoices WHERE id = ${id};
+
+`,
+        sql`
+        UPDATE archives
+        SET status = 'paid'
+`,
+        sql`
+        DELETE FROM invoices WHERE id = ${id};
+`   
+    ]);
+
+    revalidatePath('/balance');
+    revalidatePath('/');
+    revalidatePath('/archive');
+    redirect('/archive');
+};
 
