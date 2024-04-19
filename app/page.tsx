@@ -5,7 +5,7 @@ import { fetchCategories, fetchCategoriesByName } from '@/lib/data';
 export default function Home() {
     
     return (
-        <main>
+        <main className='w-full'>
             <MainComponent />
         </main>
     );

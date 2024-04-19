@@ -2,16 +2,10 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { UpdateInvoice, DeleteInvoice, PayInvoice } from './BalanceButtons';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+
 
 export const TableComponent = ({ invoices }: { invoices: any[] }) => {
-    // const [ids, setIds] = useState<string[]>([]);
     const [ids, setIds] = useState<string>('');
-
-
-    // const handleOnClick = (id: string) => {
-    //     setIds((prevIds: string[]) => [...prevIds, id]);
-    // };
 
     const handleOnClick = (id: string) => {
         setIds(id);
@@ -55,7 +49,7 @@ export const TableComponent = ({ invoices }: { invoices: any[] }) => {
                         return (
                             <TableRow key={invoice.id} className="pointer mb-2 w-full rounded-md bg-white p-4">
                                 <TableCell>
-                                    <input type="checkbox" id={invoice.id} onClick={() => handleOnClick(invoice.id)}/>
+                                    <input type="checkbox" id={invoice.id} onClick={() => handleOnClick(invoice.id)} />
                                 </TableCell>
                                 <TableCell className="font-medium">{invoice.name}</TableCell>
                                 <TableCell>{invoice.amount}</TableCell>
@@ -71,7 +65,7 @@ export const TableComponent = ({ invoices }: { invoices: any[] }) => {
                     })}
                 </TableBody>
             </Table>
-            <PayInvoice id = {ids}/>
+            <PayInvoice id={ids} />
         </div>
     );
 };

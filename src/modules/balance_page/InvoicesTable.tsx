@@ -46,7 +46,7 @@ export const InvoicesTable = ({ query, currentPage }: any) => {
         setSelected(undefined);
         setFilteredInvoices([]);
         setFilteredByDate([]);
-        // fetchData();
+
     };
 
     const handleSelect: SelectRangeEventHandler = (dateRange) => {

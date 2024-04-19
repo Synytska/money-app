@@ -60,7 +60,7 @@ export const payInvoice = async (id: string) => {
 `,
         sql`
         DELETE FROM invoices WHERE id = ${id};
-`   
+`
     ]);
 
     revalidatePath('/balance');
@@ -68,4 +68,32 @@ export const payInvoice = async (id: string) => {
     revalidatePath('/archive');
     redirect('/archive');
 };
+
+const UpdateInvoice = FormSchema.omit({ id: true, date: true, method: true, categ_name: true });
+
+// ...
+
+export const updateInvoice = async (id: string, formData: FormData) => {
+    const { customerId, amount, status } = UpdateInvoice.parse({
+        customerId: formData.get('customerId'),
+        amount: formData.get('amount'),
+        status: formData.get('status')
+    });
+
+    const amountInCents = amount * 100;
+
+    await sql`
+    UPDATE invoices
+    SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
+    WHERE id = ${id}
+  `;
+
+    revalidatePath('/balance');
+    redirect('/balance');
+};
+
+export const deleteInvoice = async(id: string) => {
+    await sql`DELETE FROM invoices WHERE id = ${id}`;
+    revalidatePath('/balance');
+  }
 

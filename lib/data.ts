@@ -26,8 +26,8 @@ export async function fetchLatestInvoices() {
     }
 }
 
-export const fetchArchives = async() => {
-    try{
+export const fetchArchives = async () => {
+    try {
         const data = await sql`
         SELECT archives.amount, users.name, archives.id, archives.method, archives.date, archives.status
         FROM archives
@@ -44,7 +44,7 @@ export const fetchArchives = async() => {
         console.error('Database Error:', error);
         throw new Error('Failed to fetch archive_invoices.');
     }
-}
+};
 // test
 export const fetchFilteredDate = async (currentPage: number) => {
     const offset = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -194,7 +194,7 @@ export async function fetchCardData() {
     }
 }
 
-export async function fetchCardDataTest() { 
+export async function fetchCardDataTest() {
     try {
         const cardDataPromise = sql`
             SELECT 
@@ -262,7 +262,6 @@ export async function fetchInvoiceById(id: string) {
 
         const invoice = data.rows.map((invoice) => ({
             ...invoice,
-            // Convert amount from cents to dollars
             amount: formatCurrency(invoice.amount)
         }));
         return invoice[0];
@@ -276,7 +275,6 @@ export const fetchCategories = async () => {
         const categoriesAmount = await sql<CategoriesField>`
         SELECT 
         categories.categ_name,  
-        categories.categ_img, 
         categories.categ_amount
         FROM categories
         ORDER BY categ_name ASC

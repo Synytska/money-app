@@ -49,7 +49,6 @@ const seedCategories = async (client) => {
         CREATE TABLE IF NOT EXISTS categories (
             id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
             categ_name VARCHAR(255) NOT NULL,
-            categ_img VARCHAR(255) NOT NULL,
             categ_amount INT NOT NULL
           );
         `;
@@ -58,8 +57,8 @@ const seedCategories = async (client) => {
         const insertedCategories = await Promise.all(
             categories.map(
                 (categorie) => client.sql`
-                INSERT INTO categories (categ_name, categ_img, categ_amount)
-                VALUES (${categorie.categ_name}, ${categorie.categ_img}, ${categorie.categ_amount})
+                INSERT INTO categories (categ_name, categ_amount)
+                VALUES (${categorie.categ_name}, ${categorie.categ_amount})
                 ON CONFLICT (id) DO NOTHING;
                 `
             )

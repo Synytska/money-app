@@ -1,9 +1,10 @@
 // import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@/components/ui/button';
-import { payInvoice } from '@/lib/actions';
+import { payInvoice, deleteInvoice } from '@/lib/actions';
 
 export function CreateInvoice() {
     return (
@@ -30,28 +31,33 @@ export const CreateInvoiceTest = ({ name, children }: { name: string; children: 
 export const UpdateInvoice = ({ id }: { id: string }) => {
     return (
         <Link href={`/balance/${id}/edit`} className="rounded-md border p-2 hover:bg-gray-100">
-            Edit
+            <PencilIcon className="w-5" />{' '}
         </Link>
     );
 };
 
 export const DeleteInvoice = ({ id }: { id: string }) => {
+    const deleteInvoiceWithId = deleteInvoice.bind(null, id);
+
     return (
         <>
-            <button className="rounded-md border p-2 hover:bg-gray-100">
-                <span className="sr-only">Delete</span>
-            </button>
+            <form action={deleteInvoiceWithId}>
+                <button className="rounded-md border p-2 hover:bg-gray-100">
+                    <span className="sr-only">Delete</span>
+                    <TrashIcon className="w-5" />
+                </button>
+            </form>
         </>
     );
 };
 
 export const PayInvoice = ({ id }: { id: string }) => {
     const payInvoiceWithId = payInvoice.bind(null, id);
-   
+
     return (
-      <form action={payInvoiceWithId}>
-        <Button>Pay</Button>
-      </form>
+        <form action={payInvoiceWithId}>
+            <Button>Pay</Button>
+        </form>
     );
-  }
+};
 

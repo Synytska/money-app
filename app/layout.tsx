@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-// import { Inter } from 'next/font/google';
-import { Header } from '@/src/common/components/Header';
+import { BaseLayout } from '@/src/common/components/BaseLayout';
+import { MobileMenu } from '@/src/common/components/menu/MobileMenu';
+import { MenuBar } from '@/src/common/components/menu/MenuBar';
 
-// const inter = Inter({ subsets: ['latin'] });
 import '@/src/styles/index.css';
 
 export const metadata: Metadata = {
@@ -13,11 +13,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
-            <body className="antialiased max-w-screen-xl w-full">
-                <div className="flex flex-col justify-between py-10 px-6 h-screen">
-                    <Header />
+            <body className="bg-main_gray h-screen">
+                <BaseLayout>
+                    <MenuBar />
                     {children}
-                </div>
+                    <MobileMenu />
+                </BaseLayout>
             </body>
         </html>
     );
