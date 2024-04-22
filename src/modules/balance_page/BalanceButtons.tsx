@@ -1,8 +1,6 @@
-// import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { ReactNode } from 'react';
-import { useRouter } from 'next/router';
 import { Button } from '@/components/ui/button';
 import { payInvoice, deleteInvoice } from '@/lib/actions';
 
