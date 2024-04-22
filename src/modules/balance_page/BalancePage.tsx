@@ -1,10 +1,7 @@
 import Pagination from '@/src/modules/balance_page/Pagination';
 import Search from '@/src/modules/balance_page/Search';
 import { InvoicesTable } from '@/src/modules/balance_page/InvoicesTable';
-import { CreateInvoice } from '@/src/modules/balance_page/BalanceButtons';
 import { FC } from 'react';
-
-// import { CalendarFilter } from '@/src/common/components/CalendarFilter';
 
 interface IBalance {
     query: string;
