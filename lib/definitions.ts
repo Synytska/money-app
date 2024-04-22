@@ -24,12 +24,11 @@ export type InvoicesTable = {
     method: string;
 };
 
-
 export type Categories = {
     categ_name: string;
     categ_img: string;
     categ_amount: number;
-}
+};
 
 export type CustomerField = {
     id: string;
@@ -49,6 +48,5 @@ export type CategoriesForm = {
 
 export type CategoriesField = {
     categ_name: string;
-    categ_img: string;
     categ_amount: number;
 };
