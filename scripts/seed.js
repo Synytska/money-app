@@ -37,11 +37,6 @@ const seedUsers = async (client) => {
     }
 };
 
-// const seedDate = async (client) => {
-//     try {
-//         await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-//     }
-// }
 const seedCategories = async (client) => {
     try {
         await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
