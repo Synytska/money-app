@@ -1,4 +1,4 @@
-import { CreateInvoiceTest } from '/Users/hrustyk/Desktop/money-app/src/modules/balance_page/BalanceButtons';
+import { CreateInvoiceTest } from '@/src/modules/balance_page/BalanceButtons';
 import { CarFrontIcon, ShirtIcon, WifiIcon, AppleIcon, PillIcon, Utensils } from 'lucide-react';
 import { fetchCategories } from '@/lib/data';
 import { Button } from '@/components/ui/button';
