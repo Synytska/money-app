@@ -14,10 +14,10 @@ export const TableComponent = ({ invoices }: { invoices: any[] }) => {
 
     return (
         <div className="mt-6 flow-root min-w-full align-middle rounded-lg bg-gray-50 p-2 md:pt-0">
-            <Table className="md:hidden">
+            {/* <Table className="md:hidden">
                 {invoices.map((invoice: any) => (
                     <TableBody key={invoice.id} className="border-b-[3px]">
-                        <TableRow className="pointer mb-2 w-full rounded-md bg-white grid grid-cols-2 justify-between items-center px-3">
+                        <TableRow className="pointer mb-2 w-full rounded-md bg-white grid grid-cols-3 justify-between items-center justify-items-center px-3">
                             <TableCell>{invoice.name}</TableCell>
                             <TableCell>{invoice.method}</TableCell>
                             <TableCell className="text-xl font-medium">{invoice.amount}</TableCell>
@@ -31,9 +31,9 @@ export const TableComponent = ({ invoices }: { invoices: any[] }) => {
                         </TableRow>
                     </TableBody>
                 ))}
-            </Table>
+            </Table> */}
 
-            <Table className="hidden md:table">
+            <Table className="">
                 <TableHeader>
                     <TableRow>
                         <TableHead>All</TableHead>

@@ -8,7 +8,7 @@ export const MobileMenu = () => {
     return (
         <Drawer>
             <DrawerTrigger asChild className='lg:hidden'>
-                <Button variant="outline" className='mx-auto'><HomeIcon className='h-6 w-6'/></Button>
+                <Button variant="bording" className='mx-auto'><HomeIcon className='h-6 w-6'/></Button>
             </DrawerTrigger>
             <DrawerContent>
                 <div className="mx-auto w-full max-w-sm p-4">

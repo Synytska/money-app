@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 import { DateRange } from 'react-day-picker';
 import { SelectRangeEventHandler } from 'react-day-picker';
-import { CalendarIcon } from '@radix-ui/react-icons';
+import { CalendarIcon, Cross1Icon } from '@radix-ui/react-icons';
 import { addDays, format } from 'date-fns';
 import { cn } from '@/lib/utils';
 
@@ -46,7 +46,6 @@ export const InvoicesTable = ({ query, currentPage }: any) => {
         setSelected(undefined);
         setFilteredInvoices([]);
         setFilteredByDate([]);
-
     };
 
     const handleSelect: SelectRangeEventHandler = (dateRange) => {
@@ -63,7 +62,7 @@ export const InvoicesTable = ({ query, currentPage }: any) => {
                             id="date"
                             variant={'outline'}
                             className={cn(
-                                'w-[300px] justify-start text-left font-normal',
+                                'w-[300px] justify-start text-left font-normal rounded-lg',
                                 !selected && 'text-muted-foreground'
                             )}
                         >
@@ -92,8 +91,8 @@ export const InvoicesTable = ({ query, currentPage }: any) => {
                         />
                     </PopoverContent>
                 </Popover>
-                <Button variant="secondary" onClick={() => handleOnClick(false)}>
-                    Clear X
+                <Button variant="outline" onClick={() => handleOnClick(false)}>
+                    <Cross1Icon />
                 </Button>
             </div>
             <TableComponent invoices={isCalendar ? filteredByDate : filteredInvoices} />

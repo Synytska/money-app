@@ -6,6 +6,8 @@ import { DateRange } from 'react-day-picker';
 import { formatCurrency, formatDateToLocal } from './utils';
 import { User, Invoice, InvoicesTable, InvoiceForm, CategoriesField } from './definitions';
 
+const ITEMS_PER_PAGE = 6;
+
 export async function fetchLatestInvoices() {
     try {
         const data = await sql<Invoice>`
@@ -33,6 +35,7 @@ export const fetchArchives = async () => {
         FROM archives
         JOIN users ON archives.customer_id = users.id
         ORDER BY archives.date DESC
+        LIMIT ${ITEMS_PER_PAGE}
         `;
         const archiveInvoices = data.rows.map((invoice) => ({
             ...invoice,
@@ -78,7 +81,6 @@ export const fetchFilteredDate = async (currentPage: number) => {
 };
 
 //викорситовую
-const ITEMS_PER_PAGE = 6;
 export async function fetchFilteredInvoices(query: string, currentPage: number, startDate?: any, endDate?: any) {
     const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 

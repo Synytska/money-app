@@ -30,8 +30,9 @@ export const CreateInvoiceTest = ({ name, children }: { name: string; children: 
 
 export const UpdateInvoice = ({ id }: { id: string }) => {
     return (
-        <Link href={`/balance/${id}/edit`} className="rounded-md border p-2 hover:bg-gray-100">
-            <PencilIcon className="w-5" />{' '}
+        <Link href={`/balance/${id}/edit`} className="block rounded-md bg-icon_yell p-2 hover:bg-gray-100">
+            <span className="sr-only">Update</span>
+            <PencilIcon className="w-5" />
         </Link>
     );
 };
@@ -42,7 +43,7 @@ export const DeleteInvoice = ({ id }: { id: string }) => {
     return (
         <>
             <form action={deleteInvoiceWithId}>
-                <button className="rounded-md border p-2 hover:bg-gray-100">
+                <button className="rounded-md bg-icon_red p-2 hover:bg-gray-100">
                     <span className="sr-only">Delete</span>
                     <TrashIcon className="w-5" />
                 </button>
@@ -56,7 +57,7 @@ export const PayInvoice = ({ id }: { id: string }) => {
 
     return (
         <form action={payInvoiceWithId}>
-            <Button>Pay</Button>
+            <Button variant="green">Pay</Button>
         </form>
     );
 };

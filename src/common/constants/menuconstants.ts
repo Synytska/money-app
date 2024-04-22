@@ -10,6 +10,6 @@ export const ICON_MAP = {
     dashboard: { icon: ChartPieIcon, label: 'Dashboard', href: '/' },
     transactions: { icon: BuildingLibraryIcon, label: 'Transactions', href: '/balance' },
     archive: {icon: ArchiveBoxIcon, label: 'Archive', href: '/archive'},
-    balance: {icon: ClipboardDocumentListIcon, label: 'Balance', href: '/t'}
+    balance: {icon: ClipboardDocumentListIcon, label: 'Balance', href: '/balance_cards'}
   };
   
