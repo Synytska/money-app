@@ -1,4 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { CounterClockwiseClockIcon } from '@radix-ui/react-icons'
 
 import { formatDateToLocal } from '@/lib/utils';
 import { fetchLatestInvoices } from '@/lib/data';
@@ -7,13 +8,13 @@ export const LatestInvoices = async () => {
     const latestInvoices = await fetchLatestInvoices();
 
     return (
-        <Table className="rounded-xl p-2 shadow-sm">
+        <div className='flex flex-col bg-white rounded-2xl w-full p-4 gap-4 relative min-w-[500px]'>
+        <div className='absolute left-0 top-0 bg-icon_blue w-full px-4 py-2 rounded-t-2xl flex gap-2 items-center'><CounterClockwiseClockIcon className="w-7 h-7"/><span className='text-[18px]'>Latest invoices</span></div>
+        <Table className="rounded-xl p-2 shadow-sm mt-12">
             <TableHeader>
-                <TableRow className="bg-gray-50">
-                    <TableHead className="w-[100px]">User</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Method</TableHead>
-                    <TableHead className="text-left">Amount</TableHead>
+                <TableRow>
+                    <TableHead>User</TableHead>
+                    <TableHead >Amount</TableHead>
                     <TableHead>Date</TableHead>
                 </TableRow>
             </TableHeader>
@@ -22,8 +23,6 @@ export const LatestInvoices = async () => {
                     return (
                         <TableRow key={i} className="pointer">
                             <TableCell className="font-medium">{invoice.name}</TableCell>
-                            <TableCell>{invoice.status}</TableCell>
-                            <TableCell>{invoice.method}</TableCell>
                             <TableCell className="text-left">{invoice.amount}</TableCell>
                             <TableCell className="text-left">{formatDateToLocal(invoice.date)}</TableCell>
                         </TableRow>
@@ -31,6 +30,7 @@ export const LatestInvoices = async () => {
                 })}
             </TableBody>
         </Table>
+        </div>
     );
 };
 

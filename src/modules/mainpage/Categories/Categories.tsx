@@ -1,9 +1,7 @@
 import { CreateInvoiceTest } from '@/src/modules/balance_page/BalanceButtons';
 import { CarFrontIcon, ShirtIcon, WifiIcon, AppleIcon, PillIcon, Utensils } from 'lucide-react';
 import { fetchCategories } from '@/lib/data';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
 
 export const Categories = async () => {
     const categories = await fetchCategories();
@@ -11,41 +9,37 @@ export const Categories = async () => {
     const renderIcon = (categoryName: string) => {
         switch (categoryName) {
             case 'Food':
-                return (
-                    <div className="bg-icon_green icon">
-                        <AppleIcon/>
-                    </div>
-                );
+                return <AppleIcon />;
             case 'Car':
-                return (
-                    <div className="bg-icon_yell icon">
-                        <CarFrontIcon />
-                    </div>
-                );
+                return <CarFrontIcon />;
             case 'Restaurants':
-                return (
-                    <div className="bg-icon_purp icon">
-                        <Utensils />
-                    </div>
-                );
+                return <Utensils />;
             case 'Clothes':
-                return (
-                    <div className="bg-icon_blue icon">
-                        <ShirtIcon />
-                    </div>
-                );
+                return <ShirtIcon />;
             case 'Pharmacy':
-                return (
-                    <div className="bg-icon_red icon">
-                        <PillIcon />
-                    </div>
-                );
+                return <PillIcon />;
             case 'Comunication':
-                return (
-                    <div className="bg-icon_beg icon">
-                        <WifiIcon />
-                    </div>
-                );
+                return <WifiIcon />;
+
+            default:
+                return null;
+        }
+    };
+
+    const renderColor = (categoryName: string) => {
+        switch (categoryName) {
+            case 'Food':
+                return ' bg-icon_green';
+            case 'Car':
+                return 'bg-icon_yell';
+            case 'Restaurants':
+                return 'bg-icon_purp';
+            case 'Clothes':
+                return 'bg-icon_blue';
+            case 'Pharmacy':
+                return 'bg-icon_red ';
+            case 'Comunication':
+                return 'bg-icon_beg';
 
             default:
                 return null;
@@ -53,22 +47,27 @@ export const Categories = async () => {
     };
 
     return (
-        <div className='flex flex-col gap-6'>
-            <h2 className='text-[18px] md:text-[26px]'>Categories</h2>
+        <div className="flex flex-col gap-4">
+            <h2 className="text-[18px] md:text-[26px]">Categories</h2>
             <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 pb-4">
                 {categories.map((category, i) => (
-                    <div key={i} className="bg-main_white p-2 md:p-4 flex flex-col justify-between items-center gap-2 md:gap-8 rounded-xl">
-                        <div className='text-[15px] md:text-[22px]'>{category.categ_name}</div>
+                    <div key={i} className={`${renderColor(category.categ_name)} icon flex flex-row justify-between`}>
+                        <div className="flex flex-col gap-4">
+                            <div className="flex items-center gap-4">
+                                {renderIcon(category.categ_name)}
+                                <div className="text-[15px] md:text-[22px]">{category.categ_name}</div>
+                            </div>
+                            <div className="text-[16px] md:text-[20px]">{category.categ_amount}</div>
+                        </div>
                         <CreateInvoiceTest name={category.categ_name}>
-                            {renderIcon(category.categ_name)}
+                            <PlusCircleIcon className="w-8 h-8" />
                         </CreateInvoiceTest>
-                        <div className='text-[16px] md:text-[20px]'>{category.categ_amount}</div>
                     </div>
                 ))}
             </div>
-            <Button asChild className='w-full'>
+            {/* <Button asChild className="w-full">
                 <Link href="/balance">View all transactions</Link>
-            </Button>
+            </Button> */}
         </div>
     );
 };

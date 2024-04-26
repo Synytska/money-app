@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, TrashIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
 import { ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { payInvoice, deleteInvoice } from '@/lib/actions';
@@ -19,7 +19,7 @@ export const CreateInvoiceTest = ({ name, children }: { name: string; children: 
     return (
         <Link
             href={`${name}/create`}
-            className="flex h-10 items-center rounded-lg px-4 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            className="flex h-10 items-center rounded-lg text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
         >
             {children}
         </Link>

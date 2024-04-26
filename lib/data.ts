@@ -28,24 +28,41 @@ export async function fetchLatestInvoices() {
     }
 }
 
-export const fetchArchives = async () => {
+export const fetchArchives = async (currentPage: number) => {
+    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
     try {
         const data = await sql`
         SELECT archives.amount, users.name, archives.id, archives.method, archives.date, archives.status
         FROM archives
         JOIN users ON archives.customer_id = users.id
         ORDER BY archives.date DESC
-        LIMIT ${ITEMS_PER_PAGE}
+        LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
+        // const total = Math.ceil(Number(data.rows[0].count) / ITEMS_PER_PAGE);
         const archiveInvoices = data.rows.map((invoice) => ({
             ...invoice,
             date: formatDateToLocal(invoice.date),
             amount: formatCurrency(invoice.amount)
         }));
-        return archiveInvoices;
+        return { archiveInvoices };
     } catch (error) {
         console.error('Database Error:', error);
         throw new Error('Failed to fetch archive_invoices.');
+    }
+};
+
+export const fetchArchivesPages = async () => {
+    try {
+        const count = await sql`SELECT COUNT(*)
+        FROM archives
+        JOIN users ON archives.customer_id = users.id
+        `;
+        const total = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+        return total;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch total number of invoices.');
     }
 };
 // test

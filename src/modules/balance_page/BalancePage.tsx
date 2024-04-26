@@ -21,7 +21,7 @@ export const BalancePage: FC<IBalance> = async ({ query, currentPage, totalPages
             </div>
             <InvoicesTable query={query} currentPage={currentPage} />
             <div className="mt-5 flex w-full justify-center">
-                <Pagination totalPages={totalPages} />
+                <Pagination totalPages={totalPages}/>
             </div>
         </div>
     );
