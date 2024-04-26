@@ -15,7 +15,7 @@ export async function fetchLatestInvoices() {
         FROM invoices
         JOIN users ON invoices.customer_id = users.id
         ORDER BY invoices.date DESC
-        LIMIT 5`;
+        LIMIT 4`;
 
         const latestInvoices = data.rows.map((invoice) => ({
             ...invoice,

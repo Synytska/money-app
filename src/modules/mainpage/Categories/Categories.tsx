@@ -48,16 +48,16 @@ export const Categories = async () => {
 
     return (
         <div className="flex flex-col gap-4">
-            <h2 className="text-[18px] md:text-[26px]">Categories</h2>
+            <h2 className="text-xl md:text-[22px]">Categories</h2>
             <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 pb-4">
                 {categories.map((category, i) => (
-                    <div key={i} className={`${renderColor(category.categ_name)} icon flex flex-row justify-between`}>
-                        <div className="flex flex-col gap-4">
-                            <div className="flex items-center gap-4">
-                                {renderIcon(category.categ_name)}
-                                <div className="text-[15px] md:text-[22px]">{category.categ_name}</div>
+                    <div key={i} className={`${renderColor(category.categ_name)} icon flex flex-col lg:flex-row items-start lg:items-center justify-between`}>
+                        <div className="flex flex-col gap-2 lg:gap-4">
+                            <div className="flex items-center gap-2 lg:gap-4">
+                                <span className='w-6 h-6'>{renderIcon(category.categ_name)}</span>
+                                <div className="md:text-lg">{category.categ_name}</div>
                             </div>
-                            <div className="text-[16px] md:text-[20px]">{category.categ_amount}</div>
+                            <div className="md:text-xl">{category.categ_amount}</div>
                         </div>
                         <CreateInvoiceTest name={category.categ_name}>
                             <PlusCircleIcon className="w-8 h-8" />

@@ -8,8 +8,8 @@ export const LatestInvoices = async () => {
     const latestInvoices = await fetchLatestInvoices();
 
     return (
-        <div className='flex flex-col bg-white rounded-2xl w-full p-4 gap-4 relative min-w-[500px]'>
-        <div className='absolute left-0 top-0 bg-icon_blue w-full px-4 py-2 rounded-t-2xl flex gap-2 items-center'><CounterClockwiseClockIcon className="w-7 h-7"/><span className='text-[18px]'>Latest invoices</span></div>
+        <div className='flex flex-col bg-white rounded-2xl w-full p-2 lg:p-4 gap-4 relative xl:min-w-[500px]'>
+        <div className='absolute left-0 top-0 bg-icon_blue w-full px-2 lg:px-4 py-2 rounded-t-2xl flex gap-2 items-center'><CounterClockwiseClockIcon className="w-7 h-7"/><span>Latest invoices</span></div>
         <Table className="rounded-xl p-2 shadow-sm mt-12">
             <TableHeader>
                 <TableRow>
