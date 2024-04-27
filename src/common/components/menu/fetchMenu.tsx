@@ -1,12 +1,14 @@
 'use client';
-import Link from 'next/link';
 import { FC } from 'react';
-import { ICON_MAP } from '../../constants/menuconstants';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+
 import clsx from 'clsx';
 
+import { ICON_MAP } from '../../constants/menuconstants';
+
 interface ICloseFunc {
-    closeDrawer?: () => void; 
+    closeDrawer?: () => void;
 }
 
 export const FetchMenu: FC<ICloseFunc> = ({ closeDrawer }) => {
@@ -29,4 +31,3 @@ export const FetchMenu: FC<ICloseFunc> = ({ closeDrawer }) => {
         </div>
     );
 };
-

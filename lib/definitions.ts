@@ -47,6 +47,7 @@ export type CategoriesForm = {
 };
 
 export type CategoriesField = {
+    id: string,
     categ_name: string;
     categ_amount: number;
 };

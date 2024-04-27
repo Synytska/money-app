@@ -1,8 +1,10 @@
 'use client';
+import { useEffect, useState } from 'react';
+
+import { fetchCardData } from '@/lib/data';
+
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, DoughnutController, ArcElement, Tooltip } from 'chart.js';
-import { fetchCardDataTest } from '@/lib/data';
-import { useEffect, useState } from 'react';
 
 ChartJS.register(DoughnutController, ArcElement, Tooltip);
 
@@ -13,7 +15,7 @@ export const ChartComponent = () => {
     useEffect(() => {
         const fetchingData = async () => {
             try {
-                const { totalPaidInvoices, totalPendingInvoices } = await fetchCardDataTest();
+                const { totalPaidInvoices, totalPendingInvoices } = await fetchCardData();
                 setPaid(parseFloat(totalPaidInvoices.replace(/[^0-9.-]+/g, '')));
                 setPending(parseFloat(totalPendingInvoices.replace(/[^0-9.-]+/g, '')));
             } catch (error) {
@@ -23,16 +25,14 @@ export const ChartComponent = () => {
         fetchingData();
     }, []);
 
-    // if (!paid || !pending) {
-    //     return (
-    //       <div className="flex items-center justify-center h-screen">
-    //         <div className="animate-spin rounded-full border-4 border-solid border-current border-r-transparent h-12 w-12"></div>
-    //       </div>
-    //     );
-    //   }
+    if (!paid || !pending) {
+        return (
+            <div className="animate-spin rounded-full border-4 border-solid border-current border-r-transparent h-12 w-12"></div>
+        );
+    }
 
     return (
-        <div className='w-[200px] h-[200px]'>
+        <div className="w-[200px] h-[200px]">
             <Doughnut
                 data={{
                     labels: ['Paid invoices', 'Pending invoices'],
@@ -46,9 +46,7 @@ export const ChartComponent = () => {
                         }
                     ]
                 }}
-               
             />
         </div>
     );
 };
-

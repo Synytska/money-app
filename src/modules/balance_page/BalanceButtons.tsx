@@ -1,21 +1,14 @@
-import Link from 'next/link';
-import { PencilIcon, TrashIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
 import { ReactNode } from 'react';
+import Link from 'next/link';
+
 import { Button } from '@/components/ui/button';
+
 import { payInvoice, deleteInvoice } from '@/lib/actions';
+import { UPDATE, DELETE, PAY } from '@/src/common/constants/mainconstants';
 
-export function CreateInvoice() {
-    return (
-        <Link
-            href="/balance/create"
-            className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-        >
-            <span className="hidden md:block">Create Invoice</span>{' '}
-        </Link>
-    );
-}
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 
-export const CreateInvoiceTest = ({ name, children }: { name: string; children: ReactNode }) => {
+export const CreateInvoice = ({ name, children }: { name: string; children: ReactNode }) => {
     return (
         <Link
             href={`${name}/create`}
@@ -29,7 +22,7 @@ export const CreateInvoiceTest = ({ name, children }: { name: string; children: 
 export const UpdateInvoice = ({ id }: { id: string }) => {
     return (
         <Link href={`/balance/${id}/edit`} className="block rounded-md bg-icon_yell p-2 hover:bg-gray-100">
-            <span className="sr-only">Update</span>
+            <span className="sr-only">{UPDATE}</span>
             <PencilIcon className="w-5" />
         </Link>
     );
@@ -42,7 +35,7 @@ export const DeleteInvoice = ({ id }: { id: string }) => {
         <>
             <form action={deleteInvoiceWithId}>
                 <button className="rounded-md bg-icon_red p-2 hover:bg-gray-100">
-                    <span className="sr-only">Delete</span>
+                    <span className="sr-only">{DELETE}</span>
                     <TrashIcon className="w-5" />
                 </button>
             </form>
@@ -55,7 +48,7 @@ export const PayInvoice = ({ id }: { id: string }) => {
 
     return (
         <form action={payInvoiceWithId}>
-            <Button variant="green">Pay</Button>
+            <Button variant="green">{PAY}</Button>
         </form>
     );
 };

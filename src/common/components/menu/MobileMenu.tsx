@@ -1,11 +1,12 @@
-'use client'
-import { Button } from '@/components/ui/button';
-import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
+'use client';
 import { useState } from 'react';
 
-
+import { Button } from '@/components/ui/button';
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerTrigger } from '@/components/ui/drawer';
+
 import { FetchMenu } from './fetchMenu';
+
+import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
 
 export const MobileMenu = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -19,14 +20,17 @@ export const MobileMenu = () => {
     };
     return (
         <Drawer open={isDrawerOpen}>
-            <DrawerTrigger asChild className='xl:hidden'>
-                <Button type='button' variant="bording" onClick={toggleDrawer} className='mx-auto flex gap-2'><span className='text-base'>Menu</span><HamburgerMenuIcon className='h-5 w-5'/></Button>
+            <DrawerTrigger asChild className="xl:hidden mx-auto flex gap-2">
+                <Button type="button" variant="bording" onClick={toggleDrawer}>
+                    Menu
+                    <HamburgerMenuIcon className="h-5 w-5" />
+                </Button>
             </DrawerTrigger>
             <DrawerContent>
                 <div className="mx-auto w-full max-w-sm p-4">
-                    <FetchMenu closeDrawer={closeDrawer}/>
+                    <FetchMenu closeDrawer={closeDrawer} />
                     <DrawerFooter>
-                        <DrawerClose asChild className='mx-auto'>
+                        <DrawerClose asChild className="mx-auto">
                             <Button variant="outline" size="icon" onClick={toggleDrawer}>
                                 <Cross1Icon className="h-5 w-5" />
                             </Button>
@@ -37,4 +41,3 @@ export const MobileMenu = () => {
         </Drawer>
     );
 };
-

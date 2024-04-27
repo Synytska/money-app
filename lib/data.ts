@@ -187,33 +187,33 @@ export async function fetchCustomers() {
         throw new Error('Failed to fetch all customers.');
     }
 }
-//використовую
+
+// export async function fetchCardData() {
+//     try {
+//         const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
+//         const invoiceStatusPromise = sql`SELECT
+//            SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
+//            SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
+//            FROM invoices`;
+
+//         const data = await Promise.all([invoiceCountPromise, invoiceStatusPromise]);
+
+//         const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
+//         const totalPaidInvoices = formatCurrency(data[1].rows[0].paid ?? '0');
+//         const totalPendingInvoices = formatCurrency(data[1].rows[0].pending ?? '0');
+
+//         return {
+//             numberOfInvoices,
+//             totalPaidInvoices,
+//             totalPendingInvoices
+//         };
+//     } catch (error) {
+//         console.error('Database Error:', error);
+//         throw new Error('Failed to fetch card data.');
+//     }
+// }
+//USE!!!
 export async function fetchCardData() {
-    try {
-        const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
-        const invoiceStatusPromise = sql`SELECT
-           SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
-           SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
-           FROM invoices`;
-
-        const data = await Promise.all([invoiceCountPromise, invoiceStatusPromise]);
-
-        const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
-        const totalPaidInvoices = formatCurrency(data[1].rows[0].paid ?? '0');
-        const totalPendingInvoices = formatCurrency(data[1].rows[0].pending ?? '0');
-
-        return {
-            numberOfInvoices,
-            totalPaidInvoices,
-            totalPendingInvoices
-        };
-    } catch (error) {
-        console.error('Database Error:', error);
-        throw new Error('Failed to fetch card data.');
-    }
-}
-
-export async function fetchCardDataTest() {
     try {
         const cardDataPromise = sql`
             SELECT 
@@ -289,10 +289,12 @@ export async function fetchInvoiceById(id: string) {
         throw new Error('Failed to fetch invoiceby_id.');
     }
 }
+//USE!!!
 export const fetchCategories = async () => {
     try {
         const categoriesAmount = await sql<CategoriesField>`
         SELECT 
+        categories.id,
         categories.categ_name,  
         categories.categ_amount
         FROM categories

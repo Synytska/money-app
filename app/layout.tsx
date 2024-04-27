@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+
 import { BaseLayout } from '@/src/common/components/BaseLayout';
 import { MobileMenu } from '@/src/common/components/menu/MobileMenu';
 import { MenuBar } from '@/src/common/components/menu/MenuBar';
@@ -23,4 +24,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </html>
     );
 }
-
