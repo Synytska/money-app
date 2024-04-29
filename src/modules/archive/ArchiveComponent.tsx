@@ -1,5 +1,5 @@
 import { fetchArchives } from '@/lib/data';
-import { TableComponent } from '../balance_page/TableComponent';
+import { TableComponent } from '../balance_page/Filter&Table/TableComponent';
 import Pagination from '../balance_page/Pagination';
 
 export const ArchiveComponent = async (props: any) => {
@@ -15,7 +15,7 @@ export const ArchiveComponent = async (props: any) => {
                     </div>
                     <TableComponent invoices={archiveInvoices} />
                     <div className="mt-5 flex w-full justify-center">
-                        <Pagination totalPages={total}/>
+                        <Pagination totalPages={total} />
                     </div>
                 </div>
             )}

@@ -1,4 +1,4 @@
-import { CreateInvoice } from '@/src/modules/balance_page/BalanceButtons';
+import { CreateInvoice } from '@/src/modules/balance_page/Filter&Table/BalanceButtons';
 import { OverviewLayouts } from '@/src/modules/mainpage/Overview/OverviewLayouts';
 
 import { fetchCategories } from '@/lib/data';

@@ -1,6 +1,6 @@
 import { CustomerField } from '@/lib/definitions';
 import Link from 'next/link';
-import { CheckIcon, ClockIcon, UserCircleIcon, CurrencyEuroIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, ClockIcon, UserCircleIcon, CurrencyEuroIcon, CreditCardIcon, BanknotesIcon } from '@heroicons/react/24/outline';
 // import { Button } from '@/app/ui/button';
 import { createInvoice } from '@/lib/actions';
 import { Button } from '@/src/common/components/button';
@@ -8,8 +8,7 @@ import { Button } from '@/src/common/components/button';
 export default function CreateForm({ customers, name }: { customers: CustomerField[]; name: string }) {
     return (
         <form action={createInvoice}>
-            <div className="rounded-md bg-gray-50 p-4 md:p-6">
-                {/* Customer Name */}
+            <div className="rounded-md bg-white p-4 md:p-6">
                 <div className="mb-4">
                     <div className="flex justify-between">
                         <label htmlFor="customer" className="mb-2 block text-sm font-medium">
@@ -20,7 +19,7 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
                             id="name"
                             name="categ_name"
                             value={name}
-                            className="text-right bg-gray-50 mb-2 font-semibold	text-sm text-green-500"
+                            className="text-right bg-white mb-2 font-semibold	text-sm text-black"
                         />
                     </div>
                     <div className="relative">
@@ -30,7 +29,7 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
                             className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                             defaultValue=""
                         >
-                            <option value="" disabled>
+                            <option value="Khrystyna" disabled>
                                 Select a customer
                             </option>
                             {customers.map((customer) => (
@@ -55,6 +54,7 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
                                 name="amount"
                                 type="number"
                                 step="0.01"
+                                required
                                 placeholder="Enter EUR amount"
                                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                             />
@@ -68,7 +68,6 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
                 <fieldset>
                     <div className='flex gap-6 items-center'>
                     <legend className="block text-sm font-medium">Status: </legend>
-                    {/* <div className=" px-[14px] py-3"> */}
                         <div className="flex gap-4">
                             <div className="flex items-center">
                                 <input
@@ -76,11 +75,12 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
                                     name="status"
                                     type="radio"
                                     value="unpaid"
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                    checked
+                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-white text-gray-600 focus:ring-2"
                                 />
                                 <label
                                     htmlFor="unpaid"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600"
+                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-icon_blue px-3 py-1.5 text-xs font-medium text-gray-600"
                                 >
                                     Unpaid <ClockIcon className="h-4 w-4" />
                                 </label>
@@ -91,14 +91,13 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
                                     name="status"
                                     type="radio"
                                     value="paid"
-                                    disabled={true}
                                     className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                                 />
                                 <label
                                     htmlFor="paid"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-200 px-3 py-1.5 text-xs font-medium text-gray-400"
+                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-icon_blue px-3 py-1.5 text-xs font-medium text-gray-600"
                                 >
-                                    Paid <CheckIcon className="h-4 w-4" />{' '}
+                                    Paid <CheckIcon className="h-4 w-4" />
                                 </label>
                             </div>
                         </div>
@@ -107,7 +106,6 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
                 <fieldset className='mt-4'>
                 <div className='flex gap-6 items-center'>
                     <legend className="block text-sm font-medium">Method: </legend>
-                    {/* <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3"> */}
                         <div className="flex gap-4">
                             <div className="flex items-center">
                                 <input
@@ -119,9 +117,9 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
                                 />
                                 <label
                                     htmlFor="cash"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white"
+                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-icon_blue px-3 py-1.5 text-xs font-medium text-gray-600"
                                 >
-                                    Cash
+                                    Cash <BanknotesIcon className="h-4 w-4"/>
                                 </label>
                             </div>
 
@@ -131,13 +129,14 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
                                     name="method"
                                     type="radio"
                                     value="cash"
+                                    checked
                                     className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                                 />
                                 <label
                                     htmlFor="card"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white"
+                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-icon_blue px-3 py-1.5 text-xs font-medium text-gray-600"
                                 >
-                                    Card
+                                    Card <CreditCardIcon className="h-4 w-4"/>
                                 </label>
                             </div>
                         </div>

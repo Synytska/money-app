@@ -18,7 +18,7 @@ export interface IFiltered {
     status: string;
 }
 
-export const InvoicesTable = ({ query, currentPage }: { query: string; currentPage: number }) => {
+export const FilterComponent = ({ query, currentPage }: { query: string; currentPage: number }) => {
     const [selected, setSelected] = useState<DateRange | undefined>();
     const [filteredInvoices, setFilteredInvoices] = useState<IFiltered[]>([]);
     const [filteredByDate, setFilteredByDate] = useState<IFiltered[]>([]);

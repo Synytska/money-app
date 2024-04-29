@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { UpdateInvoice, DeleteInvoice, PayInvoice } from './BalanceButtons';
 
-export const TableComponent = ({invoices}: any) => {
+export const TableComponent = ({ invoices }: any) => {
     const [ids, setIds] = useState<string>('');
 
     const handleOnClick = (id: string) => {
@@ -15,26 +15,7 @@ export const TableComponent = ({invoices}: any) => {
     return (
         <div className="flex flex-col gap-2">
             <div className="mt-6 flow-root min-w-full align-middle rounded-lg bg-icon_blue p-2 md:pt-0">
-                {/* <Table className="md:hidden">
-                {invoices.map((invoice: any) => (
-                    <TableBody key={invoice.id} className="border-b-[3px]">
-                        <TableRow className="pointer mb-2 w-full rounded-md bg-white grid grid-cols-3 justify-between items-center justify-items-center px-3">
-                            <TableCell>{invoice.name}</TableCell>
-                            <TableCell>{invoice.method}</TableCell>
-                            <TableCell className="text-xl font-medium">{invoice.amount}</TableCell>
-                            <TableCell>
-                                <UpdateInvoice id={invoice.id} />
-                            </TableCell>
-                            <TableCell>{invoice.date}</TableCell>
-                            <TableCell>
-                                <DeleteInvoice id={invoice.id} />
-                            </TableCell>
-                        </TableRow>
-                    </TableBody>
-                ))}
-            </Table> */}
-
-                <Table className="">
+                <Table>
                     <TableHeader>
                         <TableRow>
                             <TableHead>All</TableHead>
