@@ -1,11 +1,31 @@
+'use client';
 import { CustomerField } from '@/lib/definitions';
 import Link from 'next/link';
-import { CheckIcon, ClockIcon, UserCircleIcon, CurrencyEuroIcon, CreditCardIcon, BanknotesIcon } from '@heroicons/react/24/outline';
+import {
+    CheckIcon,
+    ClockIcon,
+    UserCircleIcon,
+    CurrencyEuroIcon,
+    CreditCardIcon,
+    BanknotesIcon
+} from '@heroicons/react/24/outline';
+import { RADIO_STATUS, RADIO_METHOD } from '@/src/common/constants/mainconstants';
 // import { Button } from '@/app/ui/button';
 import { createInvoice } from '@/lib/actions';
 import { Button } from '@/src/common/components/button';
+import { RadioGroupComponent } from './RadioGroup';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function CreateForm({ customers, name }: { customers: CustomerField[]; name: string }) {
+    const { toast } = useToast();
+
+    const onCreateClick = () => {
+        toast({
+            variant: 'success',
+            title: 'Your invoice was successfully created!'
+        });
+    }
+
     return (
         <form action={createInvoice}>
             <div className="rounded-md bg-white p-4 md:p-6">
@@ -19,7 +39,7 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
                             id="name"
                             name="categ_name"
                             value={name}
-                            className="text-right bg-white mb-2 font-semibold	text-sm text-black"
+                            className="text-right bg-white mb-2 font-semibold	text-sm text-gray-600"
                         />
                     </div>
                     <div className="relative">
@@ -66,79 +86,34 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
 
                 {/* Invoice Status */}
                 <fieldset>
-                    <div className='flex gap-6 items-center'>
-                    <legend className="block text-sm font-medium">Status: </legend>
+                    <div className="flex gap-6 items-center">
+                        <legend className="block text-sm font-medium">Status: </legend>
                         <div className="flex gap-4">
-                            <div className="flex items-center">
-                                <input
-                                    id="pending"
-                                    name="status"
-                                    type="radio"
-                                    value="unpaid"
-                                    checked
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-white text-gray-600 focus:ring-2"
+                            {RADIO_STATUS.map((status, index) => (
+                                <RadioGroupComponent
+                                    id={status.id}
+                                    value={status.value}
+                                    name={status.name}
+                                    label={status.label}
+                                    key={index}
                                 />
-                                <label
-                                    htmlFor="unpaid"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-icon_blue px-3 py-1.5 text-xs font-medium text-gray-600"
-                                >
-                                    Unpaid <ClockIcon className="h-4 w-4" />
-                                </label>
-                            </div>
-                            <div className="flex items-center">
-                                <input
-                                    id="paid"
-                                    name="status"
-                                    type="radio"
-                                    value="paid"
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                />
-                                <label
-                                    htmlFor="paid"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-icon_blue px-3 py-1.5 text-xs font-medium text-gray-600"
-                                >
-                                    Paid <CheckIcon className="h-4 w-4" />
-                                </label>
-                            </div>
+                            ))}
                         </div>
                     </div>
                 </fieldset>
-                <fieldset className='mt-4'>
-                <div className='flex gap-6 items-center'>
-                    <legend className="block text-sm font-medium">Method: </legend>
-                        <div className="flex gap-4">
-                            <div className="flex items-center">
-                                <input
-                                    id="cash"
-                                    name="method"
-                                    type="radio"
-                                    value="cash"
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                <fieldset className="mt-4">
+                    <div className="flex gap-4 items-center">
+                        <legend className="block text-sm font-medium">Method: </legend>
+                        <div className="flex gap-7">
+                            {RADIO_METHOD.map((method, index) => (
+                                <RadioGroupComponent
+                                    id={method.id}
+                                    value={method.value}
+                                    name={method.name}
+                                    label={method.label}
+                                    key={index}
                                 />
-                                <label
-                                    htmlFor="cash"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-icon_blue px-3 py-1.5 text-xs font-medium text-gray-600"
-                                >
-                                    Cash <BanknotesIcon className="h-4 w-4"/>
-                                </label>
-                            </div>
-
-                            <div className="flex items-center">
-                                <input
-                                    id="card"
-                                    name="method"
-                                    type="radio"
-                                    value="cash"
-                                    checked
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                />
-                                <label
-                                    htmlFor="card"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-icon_blue px-3 py-1.5 text-xs font-medium text-gray-600"
-                                >
-                                    Card <CreditCardIcon className="h-4 w-4"/>
-                                </label>
-                            </div>
+                            ))}
                         </div>
                     </div>
                 </fieldset>
@@ -150,7 +125,11 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
                 >
                     Cancel
                 </Link>
-                <Button>Create Invoice</Button>
+                <Button
+                    onClick={onCreateClick}
+                >
+                    Create Invoice
+                </Button>
             </div>
         </form>
     );

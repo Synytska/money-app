@@ -1,9 +1,12 @@
 'use client';
-import { updateInvoice } from '@/lib/actions';
-import { CustomerField, InvoiceForm } from '@/lib/definitions';
-import { UserCircleIcon, CurrencyEuroIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+
+import { updateInvoice } from '@/lib/actions';
 import { Button } from '@/src/common/components/button';
+
+import { CustomerField } from '@/lib/definitions';
+
+import { UserCircleIcon, CurrencyEuroIcon } from '@heroicons/react/24/outline';
 
 export default function EditForm({ invoice, customers }: { invoice: any; customers: CustomerField[] }) {
     const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
@@ -68,7 +71,7 @@ export default function EditForm({ invoice, customers }: { invoice: any; custome
                                     type="radio"
                                     value="unpaid"
                                     defaultChecked={invoice.status === 'unpaid'}
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-icon_blue text-gray-600 focus:ring-2"
                                 />
                                 <label
                                     htmlFor="unpaid"
@@ -88,7 +91,7 @@ export default function EditForm({ invoice, customers }: { invoice: any; custome
                                 />
                                 <label
                                     htmlFor="paid"
-                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white"
+                                    className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-icon_green px-3 py-1.5 text-xs font-medium text-gray-600"
                                 >
                                     Paid
                                 </label>

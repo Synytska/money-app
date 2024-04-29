@@ -19,3 +19,14 @@ export const UPDATE = 'Update';
 export const DELETE = 'Delete';
 export const PAY = 'Pay';
 export const SEARCH = 'Search';
+
+export const RADIO_STATUS = [
+    { name: 'status', id: 'paid', value: 'paid', label: 'Paid' },
+    { name: 'status', id: 'pending', value: 'unpaid', label: 'Unpaid' }
+];
+
+export const RADIO_METHOD = [
+    { name: 'method', id: 'cash', value: 'cash', label: 'Cash' },
+    { name: 'method', id: 'card', value: 'card', label: 'Card' }
+];
+

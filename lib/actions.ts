@@ -92,8 +92,10 @@ export const updateInvoice = async (id: string, formData: FormData) => {
 };
 
 export const deleteInvoice = async (id: string) => {
-    await sql`DELETE FROM invoices WHERE id = ${id}`;
+    console.log(id)
     revalidatePath('/balance');
-    redirect('/balance');
+    await sql`DELETE FROM invoices WHERE id = ${id}`;
+    redirect('/archive');
+
 };
 
