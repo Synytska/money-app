@@ -10,4 +10,3 @@ export const BaseLayout: FC<PropsWithChildren> = ({ children }) => (
     </div>
 );
 
-

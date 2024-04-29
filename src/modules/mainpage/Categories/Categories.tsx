@@ -1,5 +1,5 @@
 import { CreateInvoice } from '@/src/modules/balance_page/BalanceButtons';
-import { OverviewLayouts } from '@/src/common/components/OverviewLayouts';
+import { OverviewLayouts } from '@/src/modules/mainpage/Overview/OverviewLayouts';
 
 import { fetchCategories } from '@/lib/data';
 

@@ -3,7 +3,6 @@ import { z } from 'zod';
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { useRouter } from 'next/router';
 
 const FormSchema = z.object({
     id: z.string(),
@@ -92,10 +91,9 @@ export const updateInvoice = async (id: string, formData: FormData) => {
     redirect('/balance');
 };
 
-export const deleteInvoice = async(id: string) => {
+export const deleteInvoice = async (id: string) => {
     await sql`DELETE FROM invoices WHERE id = ${id}`;
     revalidatePath('/balance');
     redirect('/balance');
-
-  }
+};
 

@@ -1,5 +1,6 @@
+ import { BalancePage } from '@/src/modules/balance_page/BalancePage';
+
 import { fetchInvoicesPages } from '@/lib/data';
-import { BalancePage } from '@/src/modules/balance_page/BalancePage';
 
 const Page = async ({
     searchParams

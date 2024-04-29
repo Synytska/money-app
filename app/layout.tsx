@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import React from 'react';
 
 import { BaseLayout } from '@/src/common/components/BaseLayout';
 import { MobileMenu } from '@/src/common/components/menu/MobileMenu';
@@ -15,11 +16,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en">
             <body className="bg-main_gray text-base">
-                <BaseLayout>
-                    <MenuBar />
-                    {children}
-                    <MobileMenu />
-                </BaseLayout>
+                <React.StrictMode>
+                    <BaseLayout>
+                        <MenuBar />
+                        {children}
+                        <MobileMenu />
+                    </BaseLayout>
+                </React.StrictMode>
             </body>
         </html>
     );

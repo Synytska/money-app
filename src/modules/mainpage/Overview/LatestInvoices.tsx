@@ -1,7 +1,5 @@
-import Link from 'next/link';
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
+import { HeadLayout } from './OverviewLayouts';
 
 import { formatDateToLocal } from '@/lib/utils';
 import { fetchLatestInvoices } from '@/lib/data';
@@ -15,10 +13,9 @@ export const LatestInvoices = async () => {
 
     return (
         <div className="flex flex-col bg-main_white rounded-2xl w-full p-2 lg:p-4 gap-4 relative xl:min-w-[500px]">
-            <div className="absolute left-0 top-0 bg-icon_blue w-full px-2 lg:px-4 py-2 rounded-t-2xl flex gap-2 items-center">
+            <HeadLayout name={LATEST_INVOICES} action={VIEW_ALL} href="/balance">
                 <CounterClockwiseClockIcon className="w-7 h-7" />
-                <span>{LATEST_INVOICES}</span>
-            </div>
+            </HeadLayout>
             <Table className="rounded-xl p-2 shadow-sm mt-12">
                 <TableHeader>
                     <TableRow>
@@ -39,9 +36,7 @@ export const LatestInvoices = async () => {
                     })}
                 </TableBody>
             </Table>
-            <Button asChild className="w-full">
-                <Link href="/balance">{VIEW_ALL}</Link>
-            </Button>
         </div>
     );
 };
+

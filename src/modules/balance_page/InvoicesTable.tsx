@@ -1,34 +1,39 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
-
 import { DateRange } from 'react-day-picker';
-import { SelectRangeEventHandler } from 'react-day-picker';
-import { CalendarIcon, Cross1Icon } from '@radix-ui/react-icons';
-import { addDays, format } from 'date-fns';
-import { cn } from '@/lib/utils';
 
 import { TableComponent } from './TableComponent';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { CalendarComponent } from './Calendar';
 
 import { fetchFilteredInvoices } from '@/lib/data';
 
 import 'react-day-picker/dist/style.css';
 
-export const InvoicesTable = ({ query, currentPage }: any) => {
+export interface IFiltered {
+    amount: string;
+    date: string;
+    id: string;
+    method: string;
+    name: string;
+    status: string;
+}
+
+export const InvoicesTable = ({ query, currentPage }: { query: string; currentPage: number }) => {
     const [selected, setSelected] = useState<DateRange | undefined>();
-    const [filteredInvoices, setFilteredInvoices] = useState<any[]>([]);
-    const [filteredByDate, setFilteredByDate] = useState<any[]>([]);
-    const [isCalendar, setisCalendar] = useState<boolean>(false);
+    const [filteredInvoices, setFilteredInvoices] = useState<IFiltered[]>([]);
+    const [filteredByDate, setFilteredByDate] = useState<IFiltered[]>([]);
+    const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+    const [buttonClicked, setButtonClicked] = useState<boolean>(false);
+
+    console.log(selected);
 
     const fetchData = useCallback(async () => {
         try {
             const { invoiceByQuery, invoiceByDate } = await fetchFilteredInvoices(
                 query,
                 currentPage,
-                selected?.from?.toISOString().substring(0, 10),
-                selected?.to?.toISOString().substring(0, 10)
+                selected?.from,
+                selected?.to
             );
             setFilteredInvoices(invoiceByQuery);
             setFilteredByDate(invoiceByDate);
@@ -42,60 +47,25 @@ export const InvoicesTable = ({ query, currentPage }: any) => {
     }, [fetchData]);
 
     const handleOnClick = (prop: boolean) => {
-        setisCalendar(prop);
+        setIsCalendarOpen(prop);
         setSelected(undefined);
-        setFilteredInvoices([]);
         setFilteredByDate([]);
-    };
+        setFilteredInvoices([]);
+        setButtonClicked(false);
 
-    const handleSelect: SelectRangeEventHandler = (dateRange) => {
-        setSelected(dateRange);
+        if (prop === false) {
+            setButtonClicked(true);
+        }
     };
-
     return (
         <div>
-            <div className="gap-2 flex">
-                <Popover>
-                    <PopoverTrigger asChild>
-                        <Button
-                            onClick={() => handleOnClick(true)}
-                            id="date"
-                            variant={'outline'}
-                            className={cn(
-                                'w-[300px] justify-start text-left font-normal rounded-lg',
-                                !selected && 'text-muted-foreground'
-                            )}
-                        >
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {selected?.from ? (
-                                selected.to ? (
-                                    <>
-                                        {format(selected.from, 'LLL dd, y')} - {format(selected.to, 'LLL dd, y')}
-                                    </>
-                                ) : (
-                                    format(selected.from, 'LLL dd, y')
-                                )
-                            ) : (
-                                <span>Pick a date</span>
-                            )}
-                        </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                            initialFocus
-                            mode="range"
-                            defaultMonth={selected?.from}
-                            selected={selected}
-                            onSelect={handleSelect}
-                            numberOfMonths={2}
-                        />
-                    </PopoverContent>
-                </Popover>
-                <Button variant="outline" onClick={() => handleOnClick(false)}>
-                    <Cross1Icon />
-                </Button>
-            </div>
-            <TableComponent invoices={isCalendar ? filteredByDate : filteredInvoices} />
+            <CalendarComponent
+                onSelectDateRange={setSelected}
+                onClose={() => handleOnClick(false)}
+                isOpen={() => handleOnClick(true)}
+                isDisabled={buttonClicked}
+            />
+            <TableComponent invoices={isCalendarOpen ? filteredByDate : filteredInvoices} />
         </div>
     );
 };

@@ -2,9 +2,11 @@
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 
+import { SEARCH } from '@/src/common/constants/mainconstants';
+
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
-export default function Search({ placeholder }: { placeholder: string }) {
+export const Search = ({ placeholder }: { placeholder: string }) => {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
@@ -25,7 +27,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
     return (
         <div className="relative flex flex-1 flex-shrink-0">
             <label htmlFor="search" className="sr-only">
-                Search
+                {SEARCH}
             </label>
             <input
                 className="peer block w-full rounded-lg border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"

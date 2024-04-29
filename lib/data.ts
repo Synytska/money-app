@@ -1,12 +1,12 @@
 'use server';
 import { sql } from '@vercel/postgres';
-import moment from 'moment';
-import { DateRange } from 'react-day-picker';
+
+import moment from 'moment-timezone';
 
 import { formatCurrency, formatDateToLocal } from './utils';
 import { User, Invoice, InvoicesTable, InvoiceForm, CategoriesField } from './definitions';
 
-const ITEMS_PER_PAGE = 6;
+import {TIME_ZONE, ITEMS_PER_PAGE} from '@/src/common/constants/dbconstants'
 
 export async function fetchLatestInvoices() {
     try {
@@ -97,20 +97,21 @@ export const fetchFilteredDate = async (currentPage: number) => {
     }
 };
 
-//викорситовую
-export async function fetchFilteredInvoices(query: string, currentPage: number, startDate?: any, endDate?: any) {
+//USE!!!
+export async function fetchFilteredInvoices(query: string, currentPage: number, startDate?: Date, endDate?: Date) {
     const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+    const formattedStartDate = moment.utc(startDate).tz(TIME_ZONE);
+    const formattedEndDate = moment.utc(endDate).tz(TIME_ZONE);
 
     try {
         const invoicesbydate = await sql<InvoicesTable>`
     SELECT * FROM invoices
     JOIN users ON invoices.customer_id = users.id
     WHERE
-        invoices.date >= ${startDate} AND invoices.date <= ${endDate}
+    invoices.date >= ${formattedStartDate.format()} AND invoices.date <= ${formattedEndDate.format()}
     ORDER BY invoices.date DESC
     LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
-
         const invoices = await sql<InvoicesTable>`
     SELECT
         invoices.id,
@@ -141,7 +142,6 @@ export async function fetchFilteredInvoices(query: string, currentPage: number, 
             date: formatDateToLocal(invoice.date),
             amount: formatCurrency(invoice.amount)
         }));
-
         return { invoiceByQuery, invoiceByDate };
     } catch (error) {
         console.error('Database Error:', error);
@@ -231,8 +231,7 @@ export async function fetchCardData() {
             JOIN users ON archives.customer_id = users.id
         `;
 
-        const data = await cardDataPromise;
-        const payedData = await paidInvoicesPromise;
+        const [data, payedData] = await Promise.all([cardDataPromise, paidInvoicesPromise]);
 
         const numberOfKInvoices = data.rows[0].numberOfKInvoices ?? 0;
         const numberOfYInvoices = data.rows[0].numberOfYInvoices ?? 0;
@@ -248,7 +247,6 @@ export async function fetchCardData() {
             debtKhrystyna: formatCurrency(debtKhrystyna),
             debtYevhenii: formatCurrency(debtYevhenii)
         };
-
         return formattedData;
     } catch (error) {
         console.error('Database Error:', error);

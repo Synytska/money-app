@@ -15,9 +15,9 @@ export const formatCurrency = (amount: number) => {
     });
 };
 
-export const formatDateToLocal = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toISOString().substring(0, 10);
+export const formatDateToLocal = (dateStr: Date) => {
+    // const date = new Date(dateStr);
+    return dateStr.toISOString().substring(0, 10);
 };
 
 export const formatDateToLocal2 = (date: Date): string => {
