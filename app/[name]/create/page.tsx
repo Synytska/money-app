@@ -7,7 +7,7 @@ export default async function Page({ params }: { params: { name: string } }) {
     const name = params.name;
     const [categorie, customers] = await Promise.all([fetchCategoriesByName(name), fetchCustomers()])
     return (
-        <main className="w-full xl:ml-[17rem]">
+        <main className="marg_l">
             <BreadCrumbs
                 breadcrumbs={[
                     { label: 'Invoices', href: '/balance' },

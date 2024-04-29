@@ -9,7 +9,7 @@ export const ArchiveComponent = async (props: any) => {
     return (
         <>
             {archiveInvoices && (
-                <div className="w-full">
+                <div className="marg_l">
                     <div className="flex w-full items-center justify-between">
                         <h1 className="text-2xl">Archive</h1>
                     </div>

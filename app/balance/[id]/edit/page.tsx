@@ -8,7 +8,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     const [invoice, customers] = await Promise.all([fetchInvoiceById(id), fetchCustomers()]);
 
     return (
-        <main className="w-full xl:ml-[17rem]">
+        <main className="marg_l">
             <BreadCrumbs
                 breadcrumbs={[
                     { label: 'Invoices', href: '/balance' },

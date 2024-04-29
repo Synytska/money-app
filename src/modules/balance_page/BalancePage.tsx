@@ -13,7 +13,7 @@ interface IBalance {
 }
 
 export const BalancePage: FC<IBalance> = async ({ query, currentPage, totalPages }) => (
-    <div className="w-full xl:ml-[17rem] flex flex-col justify-between">
+    <div className="marg_l flex flex-col justify-between">
         <h1 className="text-xl md:text-[22px]">{TRANSACTIONS}</h1>
 
         <div className="my-4 md:mt-8">

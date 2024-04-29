@@ -7,7 +7,7 @@ import { WHOLE_DATE, WELCOME } from '@/src/common/constants/mainconstants';
 import { nunitoExtraLight, raleway } from '@/src/common/fonts/commonfonts';
 
 export const MainComponent = () => (
-    <div className="flex flex-col justify-between gap-4 xl:ml-[17rem]">
+    <div className="flex flex-col justify-between gap-4">
         {/* <BalanceCards /> */}
         <div className="flex items-center justify-between">
             <div className="flex flex-col gap-2">

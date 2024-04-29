@@ -78,4 +78,7 @@
 .icon {
     @apply p-2 md:p-4 rounded-2xl;
 }
+.marg_l {
+    @apply w-full xl:ml-[20rem];
+}
 
