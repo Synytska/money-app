@@ -1,4 +1,4 @@
-import { fetchCardDataTest } from '@/lib/data';
+import { fetchCardData } from '@/lib/data';
 
 interface ICards {
     title?: string;
@@ -7,7 +7,7 @@ interface ICards {
 }
 
 export default async function BalanceCards() {
-    const { totalPaidInvoices, totalPendingInvoices, numberOfKInvoices, numberOfYInvoices, debtKhrystyna, debtYevhenii } = await fetchCardDataTest();
+    const { totalPaidInvoices, totalPendingInvoices, numberOfKInvoices, numberOfYInvoices, debtKhrystyna, debtYevhenii } = await fetchCardData();
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <Card title="Paid" value1={totalPaidInvoices} />
