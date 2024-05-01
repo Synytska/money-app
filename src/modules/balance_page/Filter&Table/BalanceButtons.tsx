@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
+import { useToast } from '@/components/ui/use-toast';
+
 
 import { Button } from '@/components/ui/button';
 
@@ -30,11 +32,19 @@ export const UpdateInvoice = ({ id }: { id: string }) => {
 
 export const DeleteInvoice = ({ id }: { id: string }) => {
     const deleteInvoiceWithId = deleteInvoice.bind(null, id);
+    const { toast } = useToast();
+
+    const onDeleteClick = () => {
+        toast({
+            variant: 'delete',
+            title: 'Your invoice was successfully deleted!'
+        });
+    };
 
     return (
         <>
             <form action={deleteInvoiceWithId}>
-                <button className="rounded-md bg-icon_red p-2 hover:bg-gray-100">
+                <button onClick={onDeleteClick} className="rounded-md bg-icon_red p-2 hover:bg-gray-100">
                     <span className="sr-only">{DELETE}</span>
                     <TrashIcon className="w-5" />
                 </button>

@@ -9,7 +9,7 @@ import { TRANSACTIONS } from '@/src/common/constants/mainconstants';
 interface IBalance {
     query: string;
     currentPage: number;
-    totalPages: number;
+    totalPages: number; 
 }
 
 export const BalancePage: FC<IBalance> = async ({ query, currentPage, totalPages }) => (

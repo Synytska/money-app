@@ -17,14 +17,14 @@ export const HeadLayout: FC<IHeadLayout> = ({ name, children, action, href }) =>
                 {children}
                 <span>{name}</span>
             </div>
-            <Link className='underline text-gray-600' href={href}>{action}</Link>
+            <Link className='underline text-gray-600' href={href ?? "/"}>{action}</Link>
         </div>
     );
 };
 
 export const OverviewLayouts: FC<IHeadLayout> = ({ name, children }) => {
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 pt-2">
             <h2 className="text-xl md:text-[22px]">{name}</h2>
             {children}
         </div>

@@ -1,4 +1,5 @@
 'use server';
+import moment from 'moment-timezone';
 import { z } from 'zod';
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
@@ -14,32 +15,32 @@ const FormSchema = z.object({
     categ_name: z.string()
 });
 
-const CreateInvoice = FormSchema.omit({ id: true, date: true });
+const CreateInvoice = FormSchema.omit({ id: true });
 
 export async function createInvoice(formData: FormData) {
-    const { customerId, amount, status, method, categ_name } = CreateInvoice.parse({
+    const { customerId, amount, status, method, categ_name, date } = CreateInvoice.parse({
         customerId: formData.get('customerId'),
         amount: formData.get('amount'),
         status: formData.get('status'),
         method: formData.get('method'),
-        categ_name: formData.get('categ_name')
+        categ_name: formData.get('categ_name'),
+        date: formData.get('date')
     });
 
     const amountInCents = amount * 100;
-    const date = new Date().toISOString().split('T')[0];
+    const dateTZ = moment(date).format();
 
     await Promise.all([
         sql`
-        INSERT INTO invoices (customer_id, amount, status, date, method)
-        VALUES (${customerId}, ${amountInCents}, ${status}, ${date}, ${method})
-`,
+         INSERT INTO invoices (customer_id, amount, status, date, method)
+         VALUES (${customerId}, ${Math.round(amountInCents).toString()}, ${status}, ${dateTZ}, ${method})
+ `,
         sql`
-        UPDATE categories
-        SET categ_amount = categ_amount + ${amountInCents}
-        WHERE categ_name = ${categ_name}
-`
+         UPDATE categories
+         SET categ_amount = categ_amount + ${Math.round(amountInCents).toString()}
+         WHERE categ_name = ${categ_name}
+ `
     ]);
-    // console.log(categ_name);
 
     revalidatePath('/balance');
     revalidatePath('/');
@@ -49,17 +50,17 @@ export async function createInvoice(formData: FormData) {
 export const payInvoice = async (id: string) => {
     await Promise.all([
         sql`
-        INSERT INTO archives (customer_id, amount, status, date, method)
-        SELECT customer_id, amount, status, date, method FROM invoices WHERE id = ${id};
-
-`,
+         INSERT INTO archives (customer_id, amount, status, date, method)
+         SELECT customer_id, amount, status, date, method FROM invoices WHERE id = ${id};
+ 
+ `,
         sql`
-        UPDATE archives
-        SET status = 'paid'
-`,
+         UPDATE archives
+         SET status = 'paid'
+ `,
         sql`
-        DELETE FROM invoices WHERE id = ${id};
-`
+         DELETE FROM invoices WHERE id = ${id};
+ `
     ]);
 
     revalidatePath('/balance');
@@ -82,20 +83,19 @@ export const updateInvoice = async (id: string, formData: FormData) => {
     const amountInCents = amount * 100;
 
     await sql`
-    UPDATE invoices
-    SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
-    WHERE id = ${id}
-  `;
+     UPDATE invoices
+     SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
+     WHERE id = ${id}
+   `;
 
     revalidatePath('/balance');
     redirect('/balance');
 };
 
 export const deleteInvoice = async (id: string) => {
-    console.log(id)
     revalidatePath('/balance');
+    revalidatePath('/');
     await sql`DELETE FROM invoices WHERE id = ${id}`;
     redirect('/archive');
-
 };
 

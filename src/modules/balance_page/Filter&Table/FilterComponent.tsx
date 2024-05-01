@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
+
 import { DateRange } from 'react-day-picker';
 
 import { TableComponent } from './TableComponent';
@@ -24,8 +25,6 @@ export const FilterComponent = ({ query, currentPage }: { query: string; current
     const [filteredByDate, setFilteredByDate] = useState<IFiltered[]>([]);
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
     const [buttonClicked, setButtonClicked] = useState<boolean>(false);
-
-    console.log(selected);
 
     const fetchData = useCallback(async () => {
         try {

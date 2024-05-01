@@ -7,14 +7,20 @@ interface ICards {
 }
 
 export default async function BalanceCards() {
-    const { totalPaidInvoices, totalPendingInvoices, numberOfKInvoices, numberOfYInvoices, debtKhrystyna, debtYevhenii } = await fetchCardData();
+    const {
+        totalPaidInvoices,
+        totalPendingInvoices,
+        numberOfKInvoices,
+        numberOfYInvoices,
+        debtKhrystyna,
+        debtYevhenii
+    } = await fetchCardData();
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <Card title="Paid" value1={totalPaidInvoices} />
             <Card title="Unpaid" value1={totalPendingInvoices} />
             <DebtCard title="Total" value1={numberOfKInvoices} value2={numberOfYInvoices} />
             <DebtCard title="Debt" value1={debtKhrystyna} value2={debtYevhenii} />
-
         </div>
     );
 }

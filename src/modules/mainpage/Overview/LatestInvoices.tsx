@@ -9,10 +9,10 @@ import { LATEST_INVOICES, USER, AMOUNT, DATE, VIEW_ALL } from '@/src/common/cons
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
 
 export const LatestInvoices = async () => {
-    const latestInvoices = await fetchLatestInvoices();
+    const latestInvoices = await fetchLatestInvoices(); 
 
     return (
-        <div className="flex flex-col bg-main_white rounded-2xl w-full p-2 lg:p-4 gap-4 relative xl:min-w-[500px]">
+        <div className="flex flex-col bg-main_white rounded-2xl w-full p-2 lg:p-4 gap-4 relative border border-gray-300">
             <HeadLayout name={LATEST_INVOICES} action={VIEW_ALL} href="/balance">
                 <CounterClockwiseClockIcon className="w-7 h-7" />
             </HeadLayout>
@@ -30,7 +30,7 @@ export const LatestInvoices = async () => {
                             <TableRow key={i} className="pointer">
                                 <TableCell className="font-medium">{invoice.name}</TableCell>
                                 <TableCell className="text-left">{invoice.amount}</TableCell>
-                                <TableCell className="text-left">{formatDateToLocal(invoice.date)}</TableCell>
+                                <TableCell className="text-left">{invoice.date}</TableCell>
                             </TableRow>
                         );
                     })}

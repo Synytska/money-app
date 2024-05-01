@@ -19,7 +19,7 @@ module.exports = {
                 icon_green: 'hsl(138, 36%, 91%)',
                 icon_purp: 'hsl(272, 36%, 91%)',
                 icon_blue: 'hsl(198, 36%, 91%)',
-                icon_red: 'hsl(14, 36%, 91%)',
+                icon_red: 'hsl(0, 53%, 90%)',
                 icon_beg: 'hsl(60, 35%, 91%)',
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',

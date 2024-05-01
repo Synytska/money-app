@@ -9,7 +9,7 @@ export type Invoice = {
     customer_id: string;
     amount: number;
     status: string;
-    date: Date;
+    date: string;
     name: string;
     method: string;
 };
@@ -18,7 +18,7 @@ export type InvoicesTable = {
     id: string;
     customer_id: string;
     name: string;
-    date: Date;
+    date: string;
     amount: number;
     status: string;
     method: string;

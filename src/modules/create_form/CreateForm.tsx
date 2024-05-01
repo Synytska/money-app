@@ -3,15 +3,16 @@ import { CustomerField } from '@/lib/definitions';
 import Link from 'next/link';
 import { UserCircleIcon, CurrencyEuroIcon } from '@heroicons/react/24/outline';
 import { RADIO_STATUS, RADIO_METHOD } from '@/src/common/constants/mainconstants';
-// import { Button } from '@/app/ui/button';
 import { createInvoice } from '@/lib/actions';
 import { Button } from '@/src/common/components/button';
 import { RadioGroupComponent } from './RadioGroup';
 import { InputAmount } from './InputGroup';
 import { useToast } from '@/components/ui/use-toast';
+import { CalendarComponent } from '../balance_page/Filter&Table/Calendar';
 
 export default function CreateForm({ customers, name }: { customers: CustomerField[]; name: string }) {
     const { toast } = useToast();
+    const date = new Date().toISOString().split('T')[0];
 
     const onCreateClick = () => {
         toast({
@@ -25,6 +26,13 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
             <div className="flow-root min-w-full align-middle rounded-lg bg-icon_blue p-2 md:pt-0">
                 <div className="rounded-lg bg-white p-4 md:p-6 mt-6">
                     <div className="mb-4">
+                    <div className="flex items-center gap-4 mb-4">
+                            <label htmlFor="date" className="block text-sm font-medium">
+                                Choose date
+                            </label>
+                            <input type="date" id="date" name="date" defaultValue={date} className='border border-gray-200 pl-4 rounded-sm'></input>
+                        </div>
+
                         <div className="flex justify-between">
                             <label htmlFor="customer" className="mb-2 block text-sm font-medium">
                                 Choose customer

@@ -1,7 +1,11 @@
-const { db } = require('@vercel/postgres');
+import { db } from '@vercel/postgres';
+import bcrypt from 'bcrypt';
 
-const { users, invoices, categories, archives } = require('../lib/placeholder-data.js');
-const bcrypt = require('bcrypt');
+import { dateSeed } from '../lib/placeholder-data.js';
+
+import { formatMainDate } from 'lib/utils.ts';
+
+const { users, invoices, categories, archives } = dateSeed;
 
 const seedUsers = async (client) => {
     try {
@@ -78,20 +82,21 @@ const seedArchive = async (client) => {
             customer_id UUID NOT NULL,
             amount INT NOT NULL,
             status VARCHAR(255) NOT NULL,
-            date DATE NOT NULL,
+            date VARCHAR(255) NOT NULL,
             method VARCHAR(255) NOT NULL
         );
         `;
         console.log(`Created "archives" table`);
 
         const insertedArchives = await Promise.all(
-            archives.map(
-                (invoice) => client.sql`
+            archives.map((invoice) => {
+                const formattedDate = formatMainDate(invoice.date);
+                client.sql`
                 INSERT INTO archives (customer_id, amount, status, date, method)
-                VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${invoice.date}, ${invoice.method})
+                VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${formattedDate}, ${invoice.method})
                  ON CONFLICT (id) DO NOTHING;
-          `
-            )
+          `;
+            })
         );
 
         console.log(`Seeded ${insertedArchives.length} archivinvoices`);
@@ -114,7 +119,7 @@ const seedInvoices = async (client) => {
               customer_id UUID NOT NULL,
               amount INT NOT NULL,
               status VARCHAR(255) NOT NULL,
-              date DATE NOT NULL,
+              date VARCHAR(255) NOT NULL,
               method VARCHAR(255) NOT NULL
             );
           `;
@@ -122,13 +127,14 @@ const seedInvoices = async (client) => {
         console.log(`Created "invoices" table`);
 
         const insertedInvoices = await Promise.all(
-            invoices.map(
-                (invoice) => client.sql`
+            invoices.map((invoice) => {
+                const formattedDate = formatMainDate(invoice.date);
+                client.sql`
           INSERT INTO invoices (customer_id, amount, status, date, method)
-          VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${invoice.date}, ${invoice.method})
+          VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${formattedDate}, ${invoice.method})
           ON CONFLICT (id) DO NOTHING;
-        `
-            )
+        `;
+            })
         );
 
         console.log(`Seeded ${insertedInvoices.length} invoices`);

@@ -1,13 +1,14 @@
 'use server';
 import { sql } from '@vercel/postgres';
 
-import moment from 'moment-timezone';
+import { formatMainDate } from './utils';
 
 import { formatCurrency, formatDateToLocal } from './utils';
 import { User, Invoice, InvoicesTable, InvoiceForm, CategoriesField } from './definitions';
 
-import {TIME_ZONE, ITEMS_PER_PAGE} from '@/src/common/constants/dbconstants'
+import { ITEMS_PER_PAGE} from '@/src/common/constants/dbconstants'
 
+//USE!!!
 export async function fetchLatestInvoices() {
     try {
         const data = await sql<Invoice>`
@@ -19,6 +20,7 @@ export async function fetchLatestInvoices() {
 
         const latestInvoices = data.rows.map((invoice) => ({
             ...invoice,
+            date: formatDateToLocal(invoice.date),
             amount: formatCurrency(invoice.amount)
         }));
         return latestInvoices;
@@ -39,7 +41,6 @@ export const fetchArchives = async (currentPage: number) => {
         ORDER BY archives.date DESC
         LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
-        // const total = Math.ceil(Number(data.rows[0].count) / ITEMS_PER_PAGE);
         const archiveInvoices = data.rows.map((invoice) => ({
             ...invoice,
             date: formatDateToLocal(invoice.date),
@@ -66,49 +67,49 @@ export const fetchArchivesPages = async () => {
     }
 };
 // test
-export const fetchFilteredDate = async (currentPage: number) => {
-    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+// export const fetchFilteredDate = async (currentPage: number) => {
+//     const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
-    try {
-        const test = await sql<InvoicesTable>`
-        SELECT
-          invoices.id,
-          invoices.amount,
-          invoices.date,
-          invoices.status,
-          invoices.method,
-          users.name
-        FROM invoices
-        JOIN users ON invoices.customer_id = users.id
-        ORDER BY invoices.date DESC
-        LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-      `;
+//     try {
+//         const test = await sql<InvoicesTable>`
+//         SELECT
+//           invoices.id,
+//           invoices.amount,
+//           invoices.date,
+//           invoices.status,
+//           invoices.method,
+//           users.name
+//         FROM invoices
+//         JOIN users ON invoices.customer_id = users.id
+//         ORDER BY invoices.date DESC
+//         LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+//       `;
 
-        const dataT = test.rows.map((invoice) => ({
-            ...invoice,
-            // date: formatDateToLocal(invoice.date),
-            amount: formatCurrency(invoice.amount)
-        }));
+//         const dataT = test.rows.map((invoice) => ({
+//             ...invoice,
+//             // date: formatDateToLocal(invoice.date),
+//             amount: formatCurrency(invoice.amount)
+//         }));
 
-        return dataT;
-    } catch (error) {
-        console.error('Database Error:', error);
-        throw new Error('Failed to fetch date_invoices.');
-    }
-};
+//         return dataT;
+//     } catch (error) {
+//         console.error('Database Error:', error);
+//         throw new Error('Failed to fetch date_invoices.');
+//     }
+// };
 
 //USE!!!
 export async function fetchFilteredInvoices(query: string, currentPage: number, startDate?: Date, endDate?: Date) {
     const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-    const formattedStartDate = moment.utc(startDate).tz(TIME_ZONE);
-    const formattedEndDate = moment.utc(endDate).tz(TIME_ZONE);
+    const formattedStartDate = formatMainDate(startDate);
+    const formattedEndDate = formatMainDate(endDate);
 
     try {
         const invoicesbydate = await sql<InvoicesTable>`
     SELECT * FROM invoices
     JOIN users ON invoices.customer_id = users.id
     WHERE
-    invoices.date >= ${formattedStartDate.format()} AND invoices.date <= ${formattedEndDate.format()}
+    invoices.date >= ${formattedStartDate} AND invoices.date <= ${formattedEndDate}
     ORDER BY invoices.date DESC
     LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
@@ -145,10 +146,10 @@ export async function fetchFilteredInvoices(query: string, currentPage: number, 
         return { invoiceByQuery, invoiceByDate };
     } catch (error) {
         console.error('Database Error:', error);
-        throw new Error('Failed to fetch invoices.');
+        throw new Error('Failed to fetch invoices !!!.');
     }
 }
-//використовую
+//USE!!!
 export async function fetchInvoicesPages(query: string) {
     try {
         const count = await sql`SELECT COUNT(*)

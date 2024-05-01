@@ -53,13 +53,13 @@ export const Categories = async () => {
 
     return (
         <OverviewLayouts name={CATEGORIES}>
-            <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 pb-4">
+            <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-4 pb-4">
                 {categories.map((category) => (
                     <div
                         key={category.id}
                         className={`${RENDER_COLOR(
                             category.categ_name
-                        )} icon flex flex-col lg:flex-row items-start lg:items-center justify-between`}
+                        )} icon flex flex-col lg:flex-row items-start lg:items-center justify-between border border-gray-300`}
                     >
                         <div className="flex flex-col gap-2 lg:gap-4">
                             <div className="flex items-center gap-2 lg:gap-4">
