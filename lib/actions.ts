@@ -5,6 +5,8 @@ import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import { roundAmount } from './utils';
+
 const FormSchema = z.object({
     id: z.string(),
     customerId: z.string(),
@@ -30,38 +32,53 @@ export async function createInvoice(formData: FormData) {
     const amountInCents = amount * 100;
     const dateTZ = moment(date).format();
 
-    await Promise.all([
-        sql`
-         INSERT INTO invoices (customer_id, amount, status, date, method)
-         VALUES (${customerId}, ${Math.round(amountInCents).toString()}, ${status}, ${dateTZ}, ${method})
+    try {
+        await Promise.all([
+            sql`
+         INSERT INTO invoices (customer_id, amount, status, date, method, categ_name)
+         VALUES (${customerId}, ${roundAmount(amountInCents)}, ${status}, ${dateTZ}, ${method}, ${categ_name})
  `,
-        sql`
+            sql`
          UPDATE categories
-         SET categ_amount = categ_amount + ${Math.round(amountInCents).toString()}
+         SET categ_amount = categ_amount + ${roundAmount(amountInCents)}
          WHERE categ_name = ${categ_name}
  `
-    ]);
+        ]);
+    } catch (error) {
+        return {
+            message: 'Database Error: Failed to Create Invoice.'
+        };
+    }
 
     revalidatePath('/balance');
     revalidatePath('/');
-    redirect('/balance');
+    redirect('/');
 }
 
-export const payInvoice = async (id: string) => {
-    await Promise.all([
-        sql`
-         INSERT INTO archives (customer_id, amount, status, date, method)
-         SELECT customer_id, amount, status, date, method FROM invoices WHERE id = ${id};
- 
- `,
-        sql`
-         UPDATE archives
-         SET status = 'paid'
- `,
-        sql`
-         DELETE FROM invoices WHERE id = ${id};
- `
-    ]);
+export const payInvoice = async (ids: string[]) => {
+    try {
+        await Promise.all(
+            ids.map(async (id) => {
+                await sql`
+                INSERT INTO archives (customer_id, amount, status, date, method, categ_name)
+                SELECT customer_id, amount, status, date, method, categ_name FROM invoices WHERE id = ${id};
+            `;
+
+                await sql`
+                UPDATE archives
+                SET status = 'paid'
+                WHERE id = ${id};
+            `;
+
+                await sql`
+                DELETE FROM invoices
+                WHERE id = ${id};
+            `;
+            })
+        );
+    } catch (error) {
+        return { message: 'Database Error: Failed to Pay Invoice.' };
+    }
 
     revalidatePath('/balance');
     revalidatePath('/');
@@ -70,8 +87,6 @@ export const payInvoice = async (id: string) => {
 };
 
 const UpdateInvoice = FormSchema.omit({ id: true, date: true, method: true, categ_name: true });
-
-// ...
 
 export const updateInvoice = async (id: string, formData: FormData) => {
     const { customerId, amount, status } = UpdateInvoice.parse({
@@ -82,20 +97,44 @@ export const updateInvoice = async (id: string, formData: FormData) => {
 
     const amountInCents = amount * 100;
 
-    await sql`
+    try {
+        await sql`
      UPDATE invoices
-     SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
+     SET customer_id = ${customerId}, amount = ${roundAmount(amountInCents)}, status = ${status}
      WHERE id = ${id}
    `;
-
+    } catch (error) {
+        return { message: 'Database Error: Failed to Update Invoice.' };
+    }
     revalidatePath('/balance');
     redirect('/balance');
 };
 
 export const deleteInvoice = async (id: string) => {
-    revalidatePath('/balance');
+    try {
+        const deletedAmount = await sql`
+        SELECT amount
+        FROM invoices
+        WHERE id = ${id}
+    `.then((result) => result.rows[0].amount);
+        console.log(deletedAmount);
+
+        await sql`
+    UPDATE categories
+    SET categ_amount = categ_amount - ${deletedAmount}
+    WHERE categ_name IN (
+        SELECT categ_name
+        FROM invoices
+        WHERE id = ${id}
+    )
+`;
+        await sql`DELETE FROM invoices
+    WHERE id = ${id}`;
+    } catch (error) {
+        return { message: 'Database Error: Failed to Delete Invoice.' };
+    }
     revalidatePath('/');
-    await sql`DELETE FROM invoices WHERE id = ${id}`;
-    redirect('/archive');
+    revalidatePath('/balance');
+    redirect('/');
 };
 

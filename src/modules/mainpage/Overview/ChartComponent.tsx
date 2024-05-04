@@ -32,7 +32,7 @@ export const ChartComponent = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
     );
 };
 
@@ -61,7 +61,7 @@ export const ChartDoughnut = ({ setPaidInvoices }: any) => {
     }
 
     return (
-        <div className="w-[200px] h-[200px]">
+        <div className="w-[160px] h-[160px]">
             <Doughnut
                 data={{
                     labels: ['Paid invoices', 'Pending invoices'],

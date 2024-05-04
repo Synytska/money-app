@@ -53,13 +53,13 @@ export const DeleteInvoice = ({ id }: { id: string }) => {
     );
 };
 
-export const PayInvoice = ({ id }: { id: string }) => {
-    const payInvoiceWithId = payInvoice.bind(null, id);
+export const PayInvoice = ({ ids }: { ids: string[] }) => {
+    const payInvoiceWithId = payInvoice.bind(null, ids);
 
     return (
         <form action={payInvoiceWithId}>
             <Button variant="green">{PAY}</Button>
         </form>
-    );
+    )
 };
 

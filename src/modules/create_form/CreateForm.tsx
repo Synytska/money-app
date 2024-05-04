@@ -23,7 +23,7 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
 
     return (
         <form action={createInvoice}>
-            <div className="flow-root min-w-full align-middle rounded-lg bg-icon_blue p-2 md:pt-0">
+            <div className="flow-root min-w-full align-middle rounded-lg bg-icon_blue p-4 md:pt-0">
                 <div className="rounded-lg bg-white p-4 md:p-6 mt-6">
                     <div className="mb-4">
                     <div className="flex items-center gap-4 mb-4">

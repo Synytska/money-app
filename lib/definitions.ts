@@ -12,6 +12,7 @@ export type Invoice = {
     date: string;
     name: string;
     method: string;
+    categ_name: string
 };
 
 export type InvoicesTable = {
@@ -22,6 +23,7 @@ export type InvoicesTable = {
     amount: number;
     status: string;
     method: string;
+    categ_name: string
 };
 
 export type Categories = {

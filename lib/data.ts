@@ -1,12 +1,10 @@
 'use server';
 import { sql } from '@vercel/postgres';
 
-import { formatMainDate } from './utils';
-
-import { formatCurrency, formatDateToLocal } from './utils';
+import { formatCurrency, formatDateToLocal, formatMainDate } from './utils';
 import { User, Invoice, InvoicesTable, InvoiceForm, CategoriesField } from './definitions';
 
-import { ITEMS_PER_PAGE} from '@/src/common/constants/dbconstants'
+import { ITEMS_PER_PAGE } from '@/src/common/constants/dbconstants';
 
 //USE!!!
 export async function fetchLatestInvoices() {
@@ -35,7 +33,7 @@ export const fetchArchives = async (currentPage: number) => {
 
     try {
         const data = await sql`
-        SELECT archives.amount, users.name, archives.id, archives.method, archives.date, archives.status
+        SELECT archives.amount, users.name, archives.id, archives.method, archives.date, archives.status, archives.categ_name
         FROM archives
         JOIN users ON archives.customer_id = users.id
         ORDER BY archives.date DESC
@@ -66,38 +64,6 @@ export const fetchArchivesPages = async () => {
         throw new Error('Failed to fetch total number of invoices.');
     }
 };
-// test
-// export const fetchFilteredDate = async (currentPage: number) => {
-//     const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-
-//     try {
-//         const test = await sql<InvoicesTable>`
-//         SELECT
-//           invoices.id,
-//           invoices.amount,
-//           invoices.date,
-//           invoices.status,
-//           invoices.method,
-//           users.name
-//         FROM invoices
-//         JOIN users ON invoices.customer_id = users.id
-//         ORDER BY invoices.date DESC
-//         LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-//       `;
-
-//         const dataT = test.rows.map((invoice) => ({
-//             ...invoice,
-//             // date: formatDateToLocal(invoice.date),
-//             amount: formatCurrency(invoice.amount)
-//         }));
-
-//         return dataT;
-//     } catch (error) {
-//         console.error('Database Error:', error);
-//         throw new Error('Failed to fetch date_invoices.');
-//     }
-// };
-
 //USE!!!
 export async function fetchFilteredInvoices(query: string, currentPage: number, startDate?: Date, endDate?: Date) {
     const offset = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -120,6 +86,7 @@ export async function fetchFilteredInvoices(query: string, currentPage: number, 
         invoices.date,
         invoices.status,
         invoices.method,
+        invoices.categ_name,
         users.name
     FROM invoices
     JOIN users ON invoices.customer_id = users.id
@@ -127,7 +94,8 @@ export async function fetchFilteredInvoices(query: string, currentPage: number, 
             users.name ILIKE ${`%${query}%`} OR
             invoices.amount::text ILIKE ${`%${query}%`} OR
             invoices.status ILIKE ${`%${query}%`} OR
-            invoices.method ILIKE ${`%${query}%`}
+            invoices.method ILIKE ${`%${query}%`} OR
+            invoices.categ_name ILIKE ${`%${query}%`}
     ORDER BY invoices.date DESC
     LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
 `;
@@ -160,7 +128,8 @@ export async function fetchInvoicesPages(query: string) {
         users.email ILIKE ${`%${query}%`} OR
         invoices.amount::text ILIKE ${`%${query}%`} OR
         invoices.date::text ILIKE ${`%${query}%`} OR
-        invoices.status ILIKE ${`%${query}%`}
+        invoices.status ILIKE ${`%${query}%`} OR
+        invoices.categ_name ILIKE ${`%${query}%`}
     `;
 
         const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
@@ -189,30 +158,6 @@ export async function fetchCustomers() {
     }
 }
 
-// export async function fetchCardData() {
-//     try {
-//         const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
-//         const invoiceStatusPromise = sql`SELECT
-//            SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
-//            SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
-//            FROM invoices`;
-
-//         const data = await Promise.all([invoiceCountPromise, invoiceStatusPromise]);
-
-//         const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
-//         const totalPaidInvoices = formatCurrency(data[1].rows[0].paid ?? '0');
-//         const totalPendingInvoices = formatCurrency(data[1].rows[0].pending ?? '0');
-
-//         return {
-//             numberOfInvoices,
-//             totalPaidInvoices,
-//             totalPendingInvoices
-//         };
-//     } catch (error) {
-//         console.error('Database Error:', error);
-//         throw new Error('Failed to fetch card data.');
-//     }
-// }
 //USE!!!
 export async function fetchCardData() {
     try {

@@ -1,11 +1,14 @@
 import { db } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
+import moment from 'moment';
 
 import { dateSeed } from '../lib/placeholder-data.js';
 
-import { formatMainDate } from 'lib/utils.ts';
-
 const { users, invoices, categories, archives } = dateSeed;
+
+const formatMainDate = (date) => {
+    return moment(date).format('YYYY-MM-DD');
+};
 
 const seedUsers = async (client) => {
     try {
@@ -83,7 +86,8 @@ const seedArchive = async (client) => {
             amount INT NOT NULL,
             status VARCHAR(255) NOT NULL,
             date VARCHAR(255) NOT NULL,
-            method VARCHAR(255) NOT NULL
+            method VARCHAR(255) NOT NULL,
+            categ_name VARCHAR(255) NOT NULL
         );
         `;
         console.log(`Created "archives" table`);
@@ -92,8 +96,8 @@ const seedArchive = async (client) => {
             archives.map((invoice) => {
                 const formattedDate = formatMainDate(invoice.date);
                 client.sql`
-                INSERT INTO archives (customer_id, amount, status, date, method)
-                VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${formattedDate}, ${invoice.method})
+                INSERT INTO archives (customer_id, amount, status, date, method, categ_name)
+                VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${formattedDate}, ${invoice.method}, ${invoice.categ_name})
                  ON CONFLICT (id) DO NOTHING;
           `;
             })
@@ -120,7 +124,8 @@ const seedInvoices = async (client) => {
               amount INT NOT NULL,
               status VARCHAR(255) NOT NULL,
               date VARCHAR(255) NOT NULL,
-              method VARCHAR(255) NOT NULL
+              method VARCHAR(255) NOT NULL,
+              categ_name VARCHAR(255) NOT NULL
             );
           `;
 
@@ -130,8 +135,8 @@ const seedInvoices = async (client) => {
             invoices.map((invoice) => {
                 const formattedDate = formatMainDate(invoice.date);
                 client.sql`
-          INSERT INTO invoices (customer_id, amount, status, date, method)
-          VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${formattedDate}, ${invoice.method})
+          INSERT INTO invoices (customer_id, amount, status, date, method, categ_name)
+          VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${formattedDate}, ${invoice.method}, ${invoice.categ_name})
           ON CONFLICT (id) DO NOTHING;
         `;
             })

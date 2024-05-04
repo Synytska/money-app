@@ -10,6 +10,7 @@ import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
 
 export const LatestInvoices = async () => {
     const latestInvoices = await fetchLatestInvoices(); 
+    console.log(latestInvoices)
 
     return (
         <div className="flex flex-col bg-main_white rounded-2xl w-full p-2 lg:p-4 gap-4 relative border border-gray-300">

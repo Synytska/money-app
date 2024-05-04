@@ -5,10 +5,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { UpdateInvoice, DeleteInvoice, PayInvoice } from './BalanceButtons';
 
 export const TableComponent = ({ invoices }: any) => {
-    const [ids, setIds] = useState<string>('');
+    const [ids, setIds] = useState<string[]>([]);
 
     const handleOnClick = (id: string) => {
-        setIds(id);
+        setIds((prevIds) => {
+            if (prevIds.includes(id)) {
+                return prevIds.filter((existingId) => existingId !== id);
+            } else {
+                return [...prevIds, id];
+            }
+        });
     };
     console.log(ids);
 
@@ -18,12 +24,13 @@ export const TableComponent = ({ invoices }: any) => {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>All</TableHead>
+                            <TableHead className='p-4'>All</TableHead>
                             <TableHead>Customer</TableHead>
                             <TableHead>Amount</TableHead>
                             <TableHead>Date</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Method</TableHead>
+                            <TableHead>Category</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -42,6 +49,7 @@ export const TableComponent = ({ invoices }: any) => {
                                     <TableCell>{invoice.date}</TableCell>
                                     <TableCell className="text-left">{invoice.status}</TableCell>
                                     <TableCell className="text-left">{invoice.method}</TableCell>
+                                    <TableCell className="text-left">{invoice.categ_name}</TableCell>
                                     <TableCell className="flex justify-end gap-3">
                                         <UpdateInvoice id={invoice.id} />
                                         <DeleteInvoice id={invoice.id} />
@@ -52,7 +60,7 @@ export const TableComponent = ({ invoices }: any) => {
                     </TableBody>
                 </Table>
             </div>
-            <PayInvoice id={ids} />
+            <PayInvoice ids={ids} />
         </div>
     );
 };

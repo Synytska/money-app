@@ -1,6 +1,6 @@
 'use client';
 
-// import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { generatePagination } from '@/lib/utils';
@@ -101,7 +101,7 @@ function PaginationArrow({
         'ml-2 md:ml-4': direction === 'right'
     });
 
-    const icon = direction === 'left' ? <p>left</p> : <p>right</p>;
+    const icon = direction === 'left' ? <ArrowLeftIcon className="w-4" /> : <ArrowRightIcon className="w-4" />;
 
     return isDisabled ? (
         <div className={className}>{icon}</div>

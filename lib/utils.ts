@@ -1,6 +1,5 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { format } from 'date-fns';
 import moment from 'moment';
 
 export function cn(...inputs: ClassValue[]) {
@@ -15,13 +14,16 @@ export const formatCurrency = (amount: number) => {
 };
 
 export const formatDateToLocal = (dateStr: string) => {
-    return moment(dateStr).format('MMMM Do YYYY');
+    return moment(dateStr).format('YYYY-MM-DD');
 };
 
-export const formatMainDate = (date: Date | undefined): string => {
-    return moment(date).format();
+export const formatMainDate = (date: Date | undefined) => {
+    return moment(date).format('YYYY-MM-DD');
 };
 
+export const roundAmount = (amount: number) => {
+    return Math.round(amount).toString();
+};
 export const generatePagination = (currentPage: number, totalPages: number) => {
     if (totalPages <= 7) {
         return Array.from({ length: totalPages }, (_, i) => i + 1);
