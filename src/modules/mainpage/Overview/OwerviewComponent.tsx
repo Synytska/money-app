@@ -1,17 +1,14 @@
-import moment from 'moment';
+import { lazy } from 'react';
 
 import { LatestInvoices } from './LatestInvoices';
-import { ChartComponent } from './ChartComponent';
-import { OverviewLayouts, IconsLayout, HeadLayout } from '@/src/modules/mainpage/Overview/OverviewLayouts';
 
-import { fetchCardData } from '@/lib/data';
-import { OVERVIEW, SPENDING, PAID, PENDING, MONTH } from '@/src/common/constants/mainconstants';
+import { OverviewLayouts } from '@/src/modules/mainpage/Overview/OverviewLayouts';
 
-import { ArrowTrendingUpIcon } from '@heroicons/react/24/outline';
+import { OVERVIEW } from '@/src/common/constants/mainconstants';
 
-export const OverviewComponent = async () => {
-    const month = moment().format(MONTH);
-    const { totalPaidInvoices } = await fetchCardData();
+const ChartComponent = lazy(() => import('./ChartComponent'));
+
+export const OverviewComponent = () => {
     return (
         <OverviewLayouts name={OVERVIEW}>
             <div className="flex flex-col lg:flex-row w-full gap-8">

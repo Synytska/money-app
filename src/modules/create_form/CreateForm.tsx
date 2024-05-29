@@ -1,14 +1,18 @@
 'use client';
-import { CustomerField } from '@/lib/definitions';
 import Link from 'next/link';
-import { UserCircleIcon, CurrencyEuroIcon } from '@heroicons/react/24/outline';
-import { RADIO_STATUS, RADIO_METHOD } from '@/src/common/constants/mainconstants';
+
+import { CustomerField } from '@/lib/definitions';
 import { createInvoice } from '@/lib/actions';
+
 import { Button } from '@/src/common/components/button';
-import { RadioGroupComponent } from './RadioGroup';
 import { InputAmount } from './InputGroup';
+import { RadioGroupComponent } from './RadioGroup';
 import { useToast } from '@/components/ui/use-toast';
 import { CalendarComponent } from '../balance_page/Filter&Table/Calendar';
+
+import { RADIO_STATUS, RADIO_METHOD } from '@/src/common/constants/mainconstants';
+
+import { UserCircleIcon } from '@heroicons/react/24/outline';
 
 export default function CreateForm({ customers, name }: { customers: CustomerField[]; name: string }) {
     const { toast } = useToast();
@@ -26,11 +30,17 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
             <div className="flow-root min-w-full align-middle rounded-lg bg-icon_blue p-4 md:pt-0">
                 <div className="rounded-lg bg-white p-4 md:p-6 mt-6">
                     <div className="mb-4">
-                    <div className="flex items-center gap-4 mb-4">
+                        <div className="flex items-center gap-4 mb-4">
                             <label htmlFor="date" className="block text-sm font-medium">
                                 Choose date
                             </label>
-                            <input type="date" id="date" name="date" defaultValue={date} className='border border-gray-200 pl-4 rounded-sm'></input>
+                            <input
+                                type="date"
+                                id="date"
+                                name="date"
+                                defaultValue={date}
+                                className="border border-gray-200 pl-4 rounded-sm"
+                            ></input>
                         </div>
 
                         <div className="flex justify-between">
@@ -52,9 +62,7 @@ export default function CreateForm({ customers, name }: { customers: CustomerFie
                                 className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                                 defaultValue=""
                             >
-                                <option value="Khrystyna" disabled>
-                                    Select a customer
-                                </option>
+                                <option>Select a customer</option>
                                 {customers.map((customer) => (
                                     <option key={customer.id} value={customer.id}>
                                         {customer.name}

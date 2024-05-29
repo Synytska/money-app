@@ -28,7 +28,7 @@
         ".next/types/**/*.ts",
         "db.js",
         "src/api/models/test.js"
-    ],
+, "auth.tsx", "scripts/firebase.ts"    ],
     "exclude": ["node_modules"]
 }
 

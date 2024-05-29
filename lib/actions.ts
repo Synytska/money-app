@@ -1,9 +1,10 @@
 'use server';
-import moment from 'moment-timezone';
-import { z } from 'zod';
-import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { sql } from '@vercel/postgres';
+import { z } from 'zod';
+
+import moment from 'moment-timezone';
 
 import { roundAmount } from './utils';
 
@@ -60,14 +61,13 @@ export const payInvoice = async (ids: string[]) => {
         await Promise.all(
             ids.map(async (id) => {
                 await sql`
-                INSERT INTO archives (customer_id, amount, status, date, method, categ_name)
-                SELECT customer_id, amount, status, date, method, categ_name FROM invoices WHERE id = ${id};
-            `;
-
-                await sql`
-                UPDATE archives
+                UPDATE invoices
                 SET status = 'paid'
                 WHERE id = ${id};
+`;
+                await sql`
+                INSERT INTO archives (customer_id, amount, status, date, method, categ_name)
+                SELECT customer_id, amount, status, date, method, categ_name FROM invoices WHERE id = ${id};
             `;
 
                 await sql`
@@ -117,7 +117,6 @@ export const deleteInvoice = async (id: string) => {
         FROM invoices
         WHERE id = ${id}
     `.then((result) => result.rows[0].amount);
-        console.log(deletedAmount);
 
         await sql`
     UPDATE categories
@@ -137,4 +136,6 @@ export const deleteInvoice = async (id: string) => {
     revalidatePath('/balance');
     redirect('/');
 };
+
+
 

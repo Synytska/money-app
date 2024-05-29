@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerTrigger } from '@/components/ui/drawer';
@@ -11,13 +11,14 @@ import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
 export const MobileMenu = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-    const toggleDrawer = () => {
+    const toggleDrawer = useCallback(() => {
         setIsDrawerOpen(!isDrawerOpen);
-    };
+    }, [isDrawerOpen]);
 
     const closeDrawer = () => {
         setIsDrawerOpen(false);
     };
+    
     return (
         <Drawer open={isDrawerOpen}>
             <DrawerTrigger asChild className="xl:hidden mx-auto flex gap-2">
@@ -41,3 +42,4 @@ export const MobileMenu = () => {
         </Drawer>
     );
 };
+

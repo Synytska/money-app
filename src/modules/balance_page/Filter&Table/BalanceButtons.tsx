@@ -53,6 +53,7 @@ export const DeleteInvoice = ({ id }: { id: string }) => {
     );
 };
 
+
 export const PayInvoice = ({ ids }: { ids: string[] }) => {
     const payInvoiceWithId = payInvoice.bind(null, ids);
 

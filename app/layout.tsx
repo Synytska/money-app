@@ -16,13 +16,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en">
             <body className="bg-main_gray text-base">
-                <React.StrictMode>
-                    <BaseLayout>
-                        <MenuBar />
-                        {children}
-                        <MobileMenu />
-                    </BaseLayout>
-                </React.StrictMode>
+                <BaseLayout>
+                    <MenuBar />
+                    {children}
+                    <MobileMenu />
+                </BaseLayout>
             </body>
         </html>
     );
