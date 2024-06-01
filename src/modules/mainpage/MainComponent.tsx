@@ -17,7 +17,6 @@ export const MainComponent = () => (
             </div>
 
             <div className="md:flex flex-col hidden">
-                {/* <AuthButton /> */}
                 <AuthProvider />
             </div>
         </div>
