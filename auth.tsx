@@ -1,11 +1,12 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { app, googleAuthProvider } from './scripts/firebase';
 import { getAuth, signInWithPopup, signOut } from 'firebase/auth';
+
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
-import Image from 'next/image';
-import { ArrowLeftStartOnRectangleIcon } from '@heroicons/react/24/outline';
+
+import { ArrowLeftStartOnRectangleIcon, ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
 
 export const AuthProvider = () => {
     const auth = getAuth(app);
@@ -57,16 +58,19 @@ export const AuthProvider = () => {
                             <p className="text-sm">{user.displayName}</p>
                             <p className="text-sm text-slate-400">{user.email}</p>
                         </div>
-                        <div className='flex gap-2'>
-                            <ArrowLeftStartOnRectangleIcon className='w-6 h-6'/>
-                            <button className="text-sm underline" onClick={handleSignOut}>Sign out</button>
+                        <div className="flex gap-2">
+                            <ArrowLeftStartOnRectangleIcon className="w-6 h-6" />
+                            <button className="text-sm underline" onClick={handleSignOut}>
+                                Sign out
+                            </button>
                         </div>
                     </div>
                 </PopoverContent>
             </Popover>
         </div>
     ) : (
-        <button className="underline" onClick={handleGoogleSignIn}>
+        <button className="underline flex gap-2" onClick={handleGoogleSignIn}>
+            <ArrowRightStartOnRectangleIcon className="w-6 h-6" />
             Sign in with Google
         </button>
     );
