@@ -1,10 +1,10 @@
 import { initializeApp } from "firebase/app";
 import {  GoogleAuthProvider } from 'firebase/auth';
 
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+// const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 const firebaseConfig = {
-  apiKey: API_KEY,
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
   authDomain: "moneyapp-32b1b.firebaseapp.com",
   projectId: "moneyapp-32b1b",
   storageBucket: "moneyapp-32b1b.appspot.com",
