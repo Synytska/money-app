@@ -1,6 +1,7 @@
-import MillionLint from '@million/lint';
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
-export default MillionLint.next({
-  rsc: true
-})(nextConfig);
+const imageConfig = {
+  images: {
+    domains: ['lh3.googleusercontent.com'],
+  },
+};
+
+export default imageConfig;

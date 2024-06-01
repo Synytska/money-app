@@ -137,5 +137,3 @@ export const deleteInvoice = async (id: string) => {
     redirect('/');
 };
 
-
-

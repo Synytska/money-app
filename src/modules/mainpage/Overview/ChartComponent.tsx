@@ -58,12 +58,6 @@ const ChartDoughnut: FC<ChartDoughnutProps> = memo(function ChartDoughnut({ setP
         fetchingData();
     }, [setPaidInvoices]);
 
-    // if (!paid || !pending) {
-    //     return (
-    //         <div className="animate-spin rounded-full border-4 border-solid border-icon_purp border-r-transparent h-48 w-48"></div>
-    //     );
-    // }
-
     return (
         <div className="w-[160px] h-[160px]">
             <Doughnut

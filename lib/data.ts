@@ -202,7 +202,6 @@ export async function fetchCardData() {
 
 export const getUser = async (email: string) => {
     try {
-        console.log('Fetching users data...');
         const user = await sql`SELECT * FROM users WHERE email=${email}`;
         return user.rows[0] as User;
     } catch (error) {

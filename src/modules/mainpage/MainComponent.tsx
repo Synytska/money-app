@@ -5,11 +5,11 @@ import { OverviewComponent } from './Overview/OwerviewComponent';
 
 import { WHOLE_DATE, WELCOME } from '@/src/common/constants/mainconstants';
 import { nunitoExtraLight, raleway } from '@/src/common/fonts/commonfonts';
-import AuthButton from './AuthButton';
+import {AuthButton} from './AuthButton';
+import { AuthProvider } from '@/auth';
 
 export const MainComponent = () => (
     <div className="marg_l flex flex-col justify-between">
-        {/* <BalanceCards /> */}
         <div className="flex items-center justify-between">
             <div className="flex flex-col">
                 <p className={`${raleway.className} text-3xl lg:text-4xl`}>{`${WELCOME} Name!`}</p>
@@ -18,7 +18,7 @@ export const MainComponent = () => (
 
             <div className="md:flex flex-col hidden">
                 <AuthButton />
-                {/* <span className={`${nunitoExtraLight.className}`}>mail@gmail.com</span> */}
+                {/* <AuthProvider /> */}
             </div>
         </div>
         <Categories />
