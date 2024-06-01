@@ -5,7 +5,7 @@ import { OverviewComponent } from './Overview/OwerviewComponent';
 
 import { WHOLE_DATE, WELCOME } from '@/src/common/constants/mainconstants';
 import { nunitoExtraLight, raleway } from '@/src/common/fonts/commonfonts';
-import {AuthButton} from './AuthButton';
+
 import { AuthProvider } from '@/auth';
 
 export const MainComponent = () => (
