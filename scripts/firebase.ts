@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { GoogleAuthProvider } from 'firebase/auth';
 
-const firebaseConfig = {
+export const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_API_KEY,
     authDomain: 'moneyapp-32b1b.firebaseapp.com',
     projectId: 'moneyapp-32b1b',
